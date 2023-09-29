@@ -2,21 +2,14 @@ from django.contrib import admin
 from raad import models
 
 
-# class WhiteListIpAdmin(admin.ModelAdmin):
-#     list_display = ('ip',)
-#     list_filter = ('ip',)
-#     search_fields = ('ip',)
-#
-#
-# admin.site.register(models.AllowedIp, WhiteListIpAdmin)
 @admin.register(models.AllowedIp)
 class AllowedIpAdmin(admin.ModelAdmin):
     list_display = ('id', 'ip')
 
 
-@admin.register(models.Client)
-class ClientAdmin(admin.ModelAdmin):
-    list_display = ('id', 'user')
+# @admin.register(models.Client)
+# class ClientAdmin(admin.ModelAdmin):
+#     list_display = ('id', 'user')
 
 
 @admin.register(models.Company)

@@ -1,0 +1,204 @@
+{% extends 'base.html' %}
+
+{% block title %}پیشخوان{% endblock %}
+
+
+<h1>{% block content_title %}پیشخوان{% endblock %}</h1>
+
+{% block content %}
+<h1> {{ user.username }} خوش آمدید</h1>
+
+<div class="container">
+
+    <div class="company-list">
+        {% for company in companies %}
+            <div class="company-row">
+                <div class="company-header">
+                    <span>{{ company.name }}</span>
+                    <span class="company-expiration">تاریخ انقضا: {{ company.expiration_date }}</span>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="company-details">
+                    <div class="details-content">
+                        <h3>دستگاه‌ها:</h3>
+                        <ul>
+                            {% for device in company.devices.all %}
+                                <li>
+                                    <span class="admin-details">
+                                         {{ device.name }}
+                                    </span>
+                                    <span class="admin-actions">
+                                        <a href="{% url 'raad:device_update' device.id %}" class="update-button">ویرایش</a>
+                                    </span>
+
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <h3>مدیران پیامرسان:</h3>
+                        <ul>
+                            {% for admin in company.admins.all %}
+                                <li class="admin-item">
+                                    <span class="admin-details">
+                                         {{ admin.messenger }} : {{ admin.admin_messenger_id }}
+                                    </span>
+                                    <span class="admin-actions">
+                                        <a href="{% url 'raad:edit_messenger_admin' admin.id %}" class="edit-admin-link">ویرایش</a> |
+                                        <a href="{% url 'raad:delete_messenger_admin' admin.id %}" class="delete-admin-link">حذف</a>
+                                    </span>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                        <a href="{% url 'raad:add_messenger_admin' company_id=company.id %}" class="add-admin-btn">افزودن مدیر پیامرسان</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<style>
+    .container {
+        text-align: center;
+    }
+
+    .company-list {
+        font-family: Arial, sans-serif;
+    }
+
+    .company-row {
+        margin: 10px;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .company-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #f7f7f7;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .company-header span {
+        font-size: 18px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .company-header .company-expiration {
+        font-size: 14px;
+        color: #888;
+    }
+
+    .company-header i {
+        font-size: 20px;
+        color: #333;
+        transition: transform 0.3s;
+    }
+
+    .company-details {
+        display: none;
+        margin-top: 10px;
+    }
+
+    .details-content {
+        background-color: #f7f7f7;
+        padding: 10px;
+        border-radius: 5px;
+    }
+
+    .company-details h3 {
+        font-size: 16px;
+        font-weight: bold;
+        color: #007BFF;
+    }
+
+    .company-details ul {
+        list-style-type: none;
+        padding: 0;
+    }
+
+    .company-details ul li {
+        margin-bottom: 5px;
+        font-size: 14px;
+        color: #555;
+        display: flex;
+        align-items: center;
+    }
+
+    .company-details ul li a {
+        margin-left: 10px;
+        color: #007BFF;
+        text-decoration: none;
+    }
+
+    .add-admin-btn {
+        background-color: #007BFF;
+        color: #fff;
+        border: none;
+        padding: 5px 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        margin-top: 10px;
+    }
+
+    .add-admin-btn:hover {
+        background-color: #0056b3;
+    }
+
+    .company-row.opened .company-header i {
+        transform: rotate(180deg);
+    }
+
+    /* Style for admin item list */
+.admin-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid #ccc;
+    list-style: none;
+}
+
+/* Style for admin details */
+.admin-details {
+    flex-grow: 1; /* Expands to take available space */
+    color: #333; /* Text color for details */
+}
+
+.admin-actions {
+    margin-left: 10px;
+    font-size: 14px;
+}
+
+.edit-admin-link,
+.delete-admin-link {
+    color: #007BFF; /* Link color */
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+/* Hover effect for links */
+.edit-admin-link:hover,
+.delete-admin-link:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+</style>
+
+<script>
+    // Add click event listeners to toggle company details
+    const companyRows = document.querySelectorAll('.company-row');
+    companyRows.forEach(row => {
+        const header = row.querySelector('.company-header');
+        const details = row.querySelector('.company-details');
+        header.addEventListener('click', () => {
+            row.classList.toggle('opened');
+            details.style.display = details.style.display === 'none' ? 'block' : 'none';
+        });
+    });
+</script>
+{% endblock %}

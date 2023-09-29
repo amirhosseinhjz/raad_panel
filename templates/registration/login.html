@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+{% block title %}ورود{% endblock %}
+
+<h1>{% block content_title %}ورود{% endblock %}</h1>
+
+{% block content %}
+<style>
+            .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            color: #ffffff;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #333;
+            color: #ffffff;
+        }
+
+        .input-group input:focus {
+            outline: none;
+        }
+
+        .btn {
+            background-color: #007BFF;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .message {
+            color: #ffffff;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .message a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+</style>
+<div class="container">
+    <form method="post">
+        {% csrf_token %}
+        <div class="input-group">
+            <label for="username">نام کاربری</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="input-group">
+            <label for="password">رمز عبور</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn">ورود</button>
+    </form>
+    <p class="message">حساب کاربری ندارید؟ <a href="{% url 'raad:signup' %}">ثبت نام</a></p>
+</div>
+{% endblock %}

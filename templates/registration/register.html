@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}ثبت نام - نام وب‌سایت شما{% endblock %}
+
+<h1>{% block content_title %}ثبت نام{% endblock %}</h1>
+
+{% block content %}
+<style>
+            .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            color: #ffffff;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #333;
+            border-radius: 5px;
+            background-color: #333;
+            color: #ffffff;
+        }
+
+        .input-group input:focus {
+            outline: none;
+        }
+
+        .btn {
+            background-color: #007BFF;
+            color: #ffffff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: #0056b3;
+        }
+
+        .message {
+            color: #ffffff;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .message a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+</style>
+<div class="container">
+    <h2>ثبت نام</h2>
+    <form method="post">
+        {% csrf_token %}
+        <div class="input-group">
+            <label for="username">نام کاربری</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="input-group">
+            <label for="email">ایمیل</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div class="input-group">
+            <label for="password1">رمز عبور</label>
+            <input type="password" id="password1" name="password1" required>
+        </div>
+        <div class="input-group">
+            <label for="password2">تکرار رمز عبور</label>
+            <input type="password" id="password2" name="password2" required>
+        </div>
+        <button type="submit" class="btn">ثبت نام</button>
+    </form>
+    <p class="message">قبلاً ثبت‌نام کرده‌اید؟ <a href="{% url 'raad:login' %}">ورود</a></p>
+</div>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}حذف مدیر پیامرسان{% endblock %}
+
+<h1>{% block content_title %}حذف مدیر پیامرسان{% endblock %}</h1>
+
+{% block content %}
+
+<div class="container">
+    <h2 style="color: white;">آیا از حذف مدیر پیامرسان "{{ object.admin_messenger_id }}" مطمئن هستید؟</h2>
+
+    <p style="color: white;"><strong style="color: white;">پیامرسان:</strong> {{ object.messenger }}</p>
+    <p style="color: white;"><strong style="color: white;">شناسه مدیر پیامرسان:</strong> {{ object.admin_messenger_id }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">حذف</button>
+        <br><br>
+        <a href="{% url 'raad:dashboard' %}" class="btn btn-secondary">بازگشت</a>
+    </form>
+</div>
+
+<style>
+    .form-label {
+        color: #ffffff;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    .form-control {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #333;
+        border-radius: 5px;
+        background-color: #333;
+        color: #ffffff;
+    }
+
+    .form-control:focus {
+        outline: none;
+    }
+
+    .btn {
+        background-color: #007BFF;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+</style>
+{% endblock %}
