@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}تیکت جدید{% endblock %}
+
+{% block content_title %}تیکت جدید{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>ثبت تیکت جدید</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">ثبت تیکت</button>
+    </form>
+</div>
+{% endblock %}

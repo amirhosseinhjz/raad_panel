@@ -24,4 +24,5 @@ admin.site.site_title = 'رعد'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('raad.urls')),
+    path('tickets/', include('ticket.urls')),
 ]

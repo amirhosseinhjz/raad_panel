@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}عنوان صفحه{% endblock %}</title>
+    <title>{% block title %}رعد{% endblock %}</title>
     <style>
         body {
             background-color: #121212;
@@ -47,9 +47,9 @@
 <body>
     <div class="navbar">
         <a href="#">خانه</a>
+        <a href="{% url 'raad:dashboard' %}">پیشخوان</a>
+        <a href="{% url 'ticket:tickets' %}">تیکت</a>
         <a href="#">درباره ما</a>
-        <a href="#">خدمات</a>
-        <a href="#">تماس</a>
         {% if user.is_authenticated %}
         <a href="{% url 'raad:logout' %}" class="logout-button">خروج</a>
         {% else %}
@@ -57,7 +57,7 @@
         {% endif %}
     </div>
     <div class="container">
-        <h1>{% block content_title %}عنوان صفحه{% endblock %}</h1>
+        <h1>{% block content_title %}رعد{% endblock %}</h1>
         {% block content %}{% endblock %}
     </div>
 </body>

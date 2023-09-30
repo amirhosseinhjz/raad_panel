@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}لیست تیکت‌ها{% endblock %}
+
+{% block content_title %}لیست تیکت‌ها{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>تیکت‌های شما:</h2>
+    <ul>
+        {% for ticket in tickets %}
+            <li>
+                <a href="{% url 'ticket:ticket_detail' ticket.id %}">{{ ticket.title }}</a>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Add a "New Ticket" button with a plus icon -->
+    <a href="{% url 'ticket:new_ticket' %}" class="btn btn-primary">
+        <span class="glyphicon glyphicon-plus"></span> ثبت تیکت جدید
+    </a>
+</div>
+{% endblock %}

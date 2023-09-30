@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load jalali_tags %}
+
 {% block title %}پیشخوان{% endblock %}
 
 
@@ -15,36 +17,36 @@
             <div class="company-row">
                 <div class="company-header">
                     <span>{{ company.name }}</span>
-                    <span class="company-expiration">تاریخ انقضا: {{ company.expiration_date }}</span>
+                    <span class="company-expiration">تاریخ انقضا: {{ company.expiration_date|to_jalali:'%y/%m/%d' }}</span>
                     <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="company-details">
                     <div class="details-content">
-                        <h3>دستگاه‌ها:</h3>
+                        <h3 style="color: black;">دستگاه‌ها:</h3>
                         <ul>
                             {% for device in company.devices.all %}
                                 <li>
-                                    <span class="admin-details">
-                                         {{ device.name }}
+                                    <span class="admin-details" style="font-size: 25px;">
+                                         <a href="{% url 'raad:device_update' device.id %}" class="update-button">
+                                             {{ device.name }}
+                                         </a>
                                     </span>
-                                    <span class="admin-actions">
-                                        <a href="{% url 'raad:device_update' device.id %}" class="update-button">ویرایش</a>
-                                    </span>
-
                                 </li>
                             {% endfor %}
                         </ul>
-                        <h3>مدیران پیامرسان:</h3>
+                        <h3 style="color: black;">مدیران پیامرسان:</h3>
                         <ul>
                             {% for admin in company.admins.all %}
                                 <li class="admin-item">
-                                    <span class="admin-details">
+                                    <span class="admin-details" style="font-size: 25px;">
+                                        <a href="{% url 'raad:edit_messenger_admin' admin.id %}" class="edit-admin-link">
                                          {{ admin.messenger }} : {{ admin.admin_messenger_id }}
+                                        </a>
                                     </span>
-                                    <span class="admin-actions">
-                                        <a href="{% url 'raad:edit_messenger_admin' admin.id %}" class="edit-admin-link">ویرایش</a> |
-                                        <a href="{% url 'raad:delete_messenger_admin' admin.id %}" class="delete-admin-link">حذف</a>
-                                    </span>
+<!--                                    <span class="admin-actions">-->
+<!--                                        <a href="{% url 'raad:edit_messenger_admin' admin.id %}" class="edit-admin-link">ویرایش</a> |-->
+<!--                                        <a href="{% url 'raad:delete_messenger_admin' admin.id %}" class="delete-admin-link">حذف</a>-->
+<!--                                    </span>-->
                                 </li>
                             {% endfor %}
                         </ul>

@@ -8,6 +8,9 @@ class AllowedIp(models.Model):
     id = models.AutoField(primary_key=True)
     ip = models.CharField(max_length=64, unique=True)
 
+    def __str__(self):
+        return self.ip
+
 
 class Company(models.Model):
     id = models.AutoField(primary_key=True)
@@ -21,6 +24,9 @@ class Company(models.Model):
     def get_devices_count(self):
         return self.devices.count()
 
+    def __str__(self):
+        return self.name
+
     class Meta:
         verbose_name_plural = "شرکت ها"
         verbose_name = "شرکت"
@@ -30,6 +36,7 @@ class Device(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
     license_key = models.CharField(max_length=200, unique=True)
+    is_used = models.BooleanField(default=False)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="devices")
 
     def save(self, *args, **kwargs):
@@ -37,6 +44,9 @@ class Device(models.Model):
             self.license_key = str(uuid.uuid4())[:30]
 
         super(Device, self).save(*args, **kwargs)
+
+    def __str__(self):
+        return self.name
 
     class Meta:
         verbose_name_plural = "دستگاه ها"
@@ -54,7 +64,9 @@ class MessengerAdmin(models.Model):
     admin_messenger_id = models.CharField(max_length=200)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="admins")
 
+    def __str__(self):
+        return f'{self.messenger} {self.admin_messenger_id}'
+
     class Meta:
         verbose_name_plural = "مدیرهای پیامرسان"
         verbose_name = "مدیر پیامرسان"
-

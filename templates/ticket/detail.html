@@ -1,0 +1,33 @@
+{% extends 'base.html' %}
+
+{% block title %}جزئیات تیکت{% endblock %}
+
+{% block content_title %}جزئیات تیکت: {{ ticket.title }}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2>{{ ticket.title }}</h2>
+    <p><strong>تاریخ ایجاد:</strong> {{ ticket.created_at }}</p>
+    <p><strong>وضعیت:</strong> {{ ticket.status }}</p>
+    <p><strong>توضیحات:</strong></p>
+    <p>{{ ticket.description }}</p>
+
+    <!-- Display ticket replies -->
+    <h3>پاسخ‌ها:</h3>
+    <ul>
+        {% for reply in replies %}
+            <li>{{ reply.message }}</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Reply form -->
+    <form method="post">
+        {% csrf_token %}
+        {{ form.message.label_tag }}
+        {{ form.message }}
+        <button type="submit" class="btn btn-primary">ارسال پاسخ</button>
+    </form>
+
+    <a href="{% url 'ticket:tickets' %}" class="btn btn-secondary">بازگشت به لیست تیکت‌ها</a>
+</div>
+{% endblock %}

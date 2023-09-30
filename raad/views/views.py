@@ -60,21 +60,21 @@ def user_can_update_messenger_admin(user, pk):
 # @user_passes_test(user_can_update_messenger_admin)
 class MessengerAdminUpdateView(UpdateView):
     model = MessengerAdmin
-    fields = ['messenger', 'admin_messenger_id']
+    fields = ['id', 'messenger', 'admin_messenger_id']
     template_name = 'dashboard/update_messenger_admin.html'
 
 
-# @method_decorator(login_required, name='dispatch')
-class MessengerAdminDeleteView(DeleteView):
-    model = MessengerAdmin
-    template_name = 'dashboard/delete_messenger_admin.html'
-    success_url = reverse_lazy('raad:dashboard')
-
+def delete_messenger_admin(request, admin_id):
+    admin = get_object_or_404(MessengerAdmin, pk=admin_id)
+    if not (request.user.is_authenticated or admin.company.user == request.user):
+        return HttpResponseNotFound()
+    admin.delete()
+    return redirect('raad:dashboard')
 
 
 class DeviceNameUpdateView(FormView):
     form_class = DeviceNameUpdateForm
-    template_name = 'dashboard/device.html'  # Create this template
+    template_name = 'dashboard/device.html'
     success_url = '/dashboard/'
 
     def get_object(self):

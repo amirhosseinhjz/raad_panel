@@ -20,6 +20,16 @@
         <br>
         <button type="submit" class="btn">ذخیره</button>
     </form>
+    <br>
+    <form method="get">
+        <button type="submit" class="btn btn-danger">
+            <a href="{% url 'raad:delete_messenger_admin' form %}">
+            حذف
+            </a>
+        </button>
+        <br><br>
+    </form>
+    <a href="{% url 'raad:dashboard' %}" class="btn btn-secondary">بازگشت</a>
 </div>
 
 <style>
