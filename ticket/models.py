@@ -23,7 +23,7 @@ class Ticket(models.Model):
             'in_progress': 'در حال انجام',
         }
         status_str = status_choices.get(self.status.__str__(), 'نامشخص')
-        return f"{self.title} ({status_str})"
+        return f"{self.title} ({status_str}) {self.created_by.username}"
 
     def save(self, *args, **kwargs):
         self.updated_at = timezone.now()

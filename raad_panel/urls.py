@@ -23,6 +23,13 @@ admin.site.site_title = 'رعد'
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('blog.urls')),
     path('', include('raad.urls')),
     path('tickets/', include('ticket.urls')),
 ]
+
+
+from django.conf import settings
+from django.conf.urls.static import static
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

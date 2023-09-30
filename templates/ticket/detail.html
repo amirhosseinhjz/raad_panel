@@ -96,7 +96,6 @@
             <li>
                 <p><strong>کاربر: {{ reply.created_by.username }} | تاریخ: {{ reply.created_at|to_jalali:'%H:%M %y/%m/%d' }}</strong></p>
                 <div class="form-group">
-<!--                    <label for="reply-{{ reply.id }}"><strong>پاسخ:</strong></label>-->
                     <textarea id="reply-{{ reply.id }}" class="form-control" rows="4" readonly>{{ reply.message }}</textarea>
                 </div>
                 <br><br>
