@@ -2,10 +2,10 @@
 
 {% load jalali_tags %}
 
-{% block title %}پیشخوان{% endblock %}
+{% block title %}داشبورد{% endblock %}
 
 
-<h1>{% block content_title %}پیشخوان{% endblock %}</h1>
+<h1>{% block content_title %}داشبورد{% endblock %}</h1>
 
 {% block content %}
 <h1> {{ user.username }} خوش آمدید</h1>
@@ -21,6 +21,9 @@
                     <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="company-details">
+                <input type="text" name="{{ company.license_key }}" value="{{ company.license_key }}" class="form-control readonly-license-key">
+                    <br>
+                    <br>
                     <div class="details-content">
                         <h3 style="color: black;">دستگاه‌ها:</h3>
                         <ul>
@@ -43,14 +46,12 @@
                                          {{ admin.messenger }} : {{ admin.admin_messenger_id }}
                                         </a>
                                     </span>
-<!--                                    <span class="admin-actions">-->
-<!--                                        <a href="{% url 'raad:edit_messenger_admin' admin.id %}" class="edit-admin-link">ویرایش</a> |-->
-<!--                                        <a href="{% url 'raad:delete_messenger_admin' admin.id %}" class="delete-admin-link">حذف</a>-->
-<!--                                    </span>-->
                                 </li>
                             {% endfor %}
                         </ul>
-                        <a href="{% url 'raad:add_messenger_admin' company_id=company.id %}" class="add-admin-btn">افزودن مدیر پیامرسان</a>
+                        <a href="{% url 'raad:add_messenger_admin' company_id=company.id %}" class="add-admin-btn">
+                                <button type="button" class="btn btn-danger">افزودن مدیر پیامرسان</button>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -188,6 +189,32 @@
 .delete-admin-link:hover {
     text-decoration: underline; /* Underline on hover */
 }
+/* Style for readonly license key input */
+.readonly-license-key {
+    width: 97%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f7f7f7;
+    color: #333;
+    font-size: 16px; /* Adjust the font size as needed */
+    font-weight: bold;
+    cursor: default;
+    outline: none;
+}
+    .btn {
+        background-color: #007BFF;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 20%;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
 
 </style>
 

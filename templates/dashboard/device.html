@@ -2,7 +2,10 @@
 
 {% block title %}ویرایش نام دستگاه{% endblock %}
 
-<h1>{% block content_title %}ویرایش نام دستگاه {{ device_model.name }}{% endblock %}</h1>
+{% block content_title %}
+<h1>شرکت  {{ company_name }}</h1>
+<h1>ویرایش نام دستگاه {{ device_model.name }}</h1>
+{% endblock %}
 
 {% block content %}
 
@@ -12,10 +15,6 @@
         <div class="input-group">
             <label for="{{ form.name.id_for_label }}" class="form-label">نام دستگاه</label>
             {{ form.name }}
-        </div>
-        <div class="input-group">
-            <label for="{{ form.license_key.id_for_label }}" class="form-label">کلید مجوز</label>
-            <input type="text" name="{{ form.license_key.name }}" value="{{ form.initial.license_key }}" class="form-control" readonly>
         </div>
         <br>
         <button type="submit" class="btn">ذخیره</button>
@@ -55,5 +54,17 @@
     .btn:hover {
         background-color: #0056b3;
     }
+    input {
+    width: 97%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f7f7f7;
+    color: #333;
+    font-size: 16px; /* Adjust the font size as needed */
+    font-weight: bold;
+    cursor: default;
+    outline: none;
+}
 </style>
 {% endblock %}

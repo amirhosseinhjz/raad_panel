@@ -1,23 +1,64 @@
 {% extends 'base.html' %}
 
+{% load jalali_tags %}
+
 {% block title %}لیست تیکت‌ها{% endblock %}
 
 {% block content_title %}لیست تیکت‌ها{% endblock %}
 
 {% block content %}
 <div class="container">
-    <h2>تیکت‌های شما:</h2>
-    <ul>
-        {% for ticket in tickets %}
-            <li>
-                <a href="{% url 'ticket:ticket_detail' ticket.id %}">{{ ticket.title }}</a>
-            </li>
-        {% endfor %}
-    </ul>
-
-    <!-- Add a "New Ticket" button with a plus icon -->
     <a href="{% url 'ticket:new_ticket' %}" class="btn btn-primary">
         <span class="glyphicon glyphicon-plus"></span> ثبت تیکت جدید
     </a>
+    <h2 style="color: #dddddd">تیکت‌های شما:</h2>
+    <ul>
+        {% for ticket in tickets %}
+            <li>
+                <a href="{% url 'ticket:ticket_detail' ticket.id %}" class="ticket-button">
+                    <span class="ticket-title">{{ ticket.title }}</span>
+                    <span class="ticket-details">
+                        وضعیت: {{ ticket.get_status_display }} |
+                        تاریخ: {{ ticket.created_at|to_jalali:'%y/%m/%d' }} |
+                        تاریخ به روزرسانی: {{ ticket.updated_at|to_jalali:'%y/%m/%d' }}
+                    </span>
+                </a>
+            </li>
+        {% endfor %}
+    </ul>
 </div>
+
+<style>
+    /* Style for ticket buttons */
+    .ticket-button {
+        display: block;
+        padding: 10px 20px;
+        background-color: #fff;
+        color: #000; /* Black text color */
+        text-decoration: none;
+        border: 1px solid #007BFF;
+        border-radius: 5px;
+        margin: 5px;
+    }
+
+    /* Style for the "New Ticket" button */
+    .btn.btn-primary {
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #007BFF;
+        color: #fff;
+        text-decoration: none;
+        border: 1px solid #007BFF;
+        border-radius: 5px;
+        margin: 5px;
+    }
+
+    /* Style for ticket details */
+    .ticket-details {
+        display: block;
+        font-size: 14px;
+        color: #777;
+        margin-top: 5px;
+    }
+</style>
 {% endblock %}

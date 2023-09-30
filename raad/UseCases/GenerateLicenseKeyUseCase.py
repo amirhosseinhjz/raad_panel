@@ -1,5 +1,4 @@
 from raad.models import Company, Device
-from raad.utils import generate_random_key
 from django.db import IntegrityError
 
 
@@ -23,11 +22,3 @@ def generate_license_keys(company_id, license_count):
         'message': 'license keys generated successfully',
         'license_keys': generated_license_keys
     }
-
-def generate_license_key(company: Company, device_count):
-    device = Device()
-    device.name = f'دستگاه شماره {device_count + 1}'
-    device.company = company
-    device.save()
-
-    return device.license_key

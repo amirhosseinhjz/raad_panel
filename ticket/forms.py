@@ -5,7 +5,11 @@ from ticket.models import Ticket
 class TicketForm(forms.ModelForm):
     class Meta:
         model = Ticket
-        fields = ['title', 'description', 'status']
+        fields = ['title', 'description']
+        labels = {
+            'title': 'عنوان تیکت',
+            'description': 'توضیحات',
+        }
 
 
 class TicketReplyForm(forms.Form):

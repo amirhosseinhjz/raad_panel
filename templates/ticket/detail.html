@@ -1,33 +1,119 @@
 {% extends 'base.html' %}
 
+{% load jalali_tags %}
+
 {% block title %}جزئیات تیکت{% endblock %}
 
-{% block content_title %}جزئیات تیکت: {{ ticket.title }}{% endblock %}
+{% block content_title %}جزئیات تیکت{% endblock %}
 
 {% block content %}
+<style>
+    h2 {
+        font-size: 24px;
+        color: #ffffff;
+    }
+
+    strong {
+        font-weight: bold;
+        color: #000000;
+    }
+
+    .info {
+        color: #000000;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    textarea {
+        width: 97%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f7f7f7;
+        color: #333;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: default;
+        outline: none;
+    }
+
+    p {
+        width: 97%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f7f7f7;
+        color: #333;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: default;
+        outline: none;
+    }
+
+    h3 {
+        font-size: 18px;
+        font-weight: bold;
+        color: #007BFF;
+    }
+
+    .btn-primary {
+        background-color: #007BFF;
+        color: #fff;
+    }
+
+    .btn-secondary {
+        background-color: #333;
+        color: #fff;
+    }
+            .btn {
+        background-color: #007BFF;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+</style>
+
 <div class="container">
     <h2>{{ ticket.title }}</h2>
-    <p><strong>تاریخ ایجاد:</strong> {{ ticket.created_at }}</p>
-    <p><strong>وضعیت:</strong> {{ ticket.status }}</p>
-    <p><strong>توضیحات:</strong></p>
-    <p>{{ ticket.description }}</p>
+    <p><strong>تاریخ ایجاد:</strong> <span class="info">{{ ticket.created_at|to_jalali:'%y/%m/%d' }}</span></p>
+    <p><strong>تاریخ به روز رسانی:</strong> <span class="info">{{ ticket.updated_at|to_jalali:'%y/%m/%d' }}</span></p>
+    <p><strong>وضعیت:</strong> <span class="info">{{ ticket.status }}</span></p>
+    <div class="form-group">
+        <label for="ticket-description"><strong>توضیحات:</strong></label>
+        <textarea id="ticket-description" class="form-control" rows="4" readonly>{{ ticket.description }}</textarea>
+    </div>
 
     <!-- Display ticket replies -->
     <h3>پاسخ‌ها:</h3>
     <ul>
         {% for reply in replies %}
-            <li>{{ reply.message }}</li>
+            <li>
+                <p><strong>کاربر: {{ reply.created_by.username }} | تاریخ ایجاد: {{ reply.created_at|to_jalali:'%H:%M:%S %y/%m/%d' }}</strong></p>
+                <div class="form-group">
+<!--                    <label for="reply-{{ reply.id }}"><strong>پاسخ:</strong></label>-->
+                    <textarea id="reply-{{ reply.id }}" class="form-control" rows="4" readonly>{{ reply.message }}</textarea>
+                </div>
+                <br><br>
+            </li>
         {% endfor %}
     </ul>
 
     <!-- Reply form -->
     <form method="post">
         {% csrf_token %}
-        {{ form.message.label_tag }}
-        {{ form.message }}
+        <div class="form-group">
+            <div style="color: #dddddd">{{ form.message.label_tag }}</div>
+            {{ form.message }}
+        </div>
         <button type="submit" class="btn btn-primary">ارسال پاسخ</button>
     </form>
-
+    <br>
     <a href="{% url 'ticket:tickets' %}" class="btn btn-secondary">بازگشت به لیست تیکت‌ها</a>
 </div>
 {% endblock %}

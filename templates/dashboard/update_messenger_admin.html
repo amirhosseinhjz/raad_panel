@@ -21,16 +21,21 @@
         <button type="submit" class="btn">ذخیره</button>
     </form>
     <br>
-    <form method="get">
-        <button type="submit" class="btn btn-danger">
-            <a href="{% url 'raad:delete_messenger_admin' form %}">
-            حذف
-            </a>
-        </button>
-        <br><br>
-    </form>
+    <button type="button" class="btn btn-danger" id="deleteButton">
+        حذف
+    </button>
+    <br><br>
     <a href="{% url 'raad:dashboard' %}" class="btn btn-secondary">بازگشت</a>
 </div>
+
+<script>
+    // Add confirmation dialog before redirecting to delete URL
+    document.getElementById('deleteButton').addEventListener('click', function () {
+        if (window.confirm('آیا از حذف مدیر پیامرسان مطمئن هستید؟')) {
+            window.location.href = "{% url 'raad:delete_messenger_admin' object_id %}";
+        }
+    });
+</script>
 
 <style>
     .form-label {
@@ -65,5 +70,30 @@
     .btn:hover {
         background-color: #0056b3;
     }
+        input {
+    width: 97%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f7f7f7;
+    color: #333;
+    font-size: 16px; /* Adjust the font size as needed */
+    font-weight: bold;
+    cursor: default;
+    outline: none;
+}
+    select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f7f7f7;
+    color: #333;
+    font-size: 16px; /* Adjust the font size as needed */
+    font-weight: bold;
+    cursor: default;
+    outline: none;
+}
+
 </style>
 {% endblock %}

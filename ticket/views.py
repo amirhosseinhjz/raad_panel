@@ -11,20 +11,20 @@ class UserTicketListView(ListView):
     context_object_name = 'tickets'
 
     def get_queryset(self):
-        return Ticket.objects.filter(created_by=self.request.user)
+        return Ticket.objects.filter(created_by=self.request.user).order_by('-created_at')
 
 
 def ticket_detail(request, ticket_id):
     ticket = get_object_or_404(Ticket, pk=ticket_id)
-    replies = ticket.replies.all()
+    replies = ticket.replies.all().order_by('created_at')
 
     if request.method == 'POST':
         form = TicketReplyForm(request.POST)
         if form.is_valid():
             message = form.cleaned_data['message']
-            reply = TicketReply.objects.create(ticket=ticket, user=request.user, message=message)
+            reply = TicketReply.objects.create(ticket=ticket, created_by=request.user, message=message)
             reply.save()
-            return redirect('ticket_detail', ticket_id=ticket.id)
+            return redirect('ticket:ticket_detail', ticket_id=ticket.id)
 
     else:
         form = TicketReplyForm()

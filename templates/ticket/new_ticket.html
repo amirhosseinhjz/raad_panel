@@ -6,11 +6,54 @@
 
 {% block content %}
 <div class="container">
-    <h2>ثبت تیکت جدید</h2>
+    <h2 style="color: #dddddd">ثبت تیکت جدید</h2>
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <button type="submit" class="btn btn-primary">ثبت تیکت</button>
     </form>
 </div>
+
+<style>
+        .btn {
+        background-color: #007BFF;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+    }
+
+    .btn:hover {
+        background-color: #0056b3;
+    }
+    input {
+    width: 97%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f7f7f7;
+    color: #333;
+    font-size: 16px; /* Adjust the font size as needed */
+    font-weight: bold;
+    cursor: default;
+    outline: none;
+}
+    textarea {
+    width: 97%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f7f7f7;
+    color: #333;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: default;
+    outline: none;
+}
+    label {
+        color: #dddddd;
+    }
+</style>
 {% endblock %}

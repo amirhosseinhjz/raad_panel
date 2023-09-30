@@ -1,5 +1,6 @@
 from django.contrib import admin
 from raad import models
+from raad.forms import CompanyAdminForm
 
 
 @admin.register(models.AllowedIp)
@@ -7,21 +8,18 @@ class AllowedIpAdmin(admin.ModelAdmin):
     list_display = ('id', 'ip')
 
 
-# @admin.register(models.Client)
-# class ClientAdmin(admin.ModelAdmin):
-#     list_display = ('id', 'user')
-
-
 @admin.register(models.Company)
 class CompanyAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'expiration_date')
+    form = CompanyAdminForm
+
+    list_display = ('id', 'name', 'license_key', 'expiration_date')
     list_filter = ('expiration_date',)
     search_fields = ('name',)
 
 
 @admin.register(models.Device)
 class DeviceAdmin(admin.ModelAdmin):
-    list_display = ('id', 'name', 'license_key', 'company')
+    list_display = ('id', 'name', 'is_activated', 'company')
     list_filter = ('company',)
     search_fields = ('name', 'license_key')
 
