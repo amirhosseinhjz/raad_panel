@@ -7,7 +7,6 @@ from raad.views.views import (
 app_name = 'raad'
 
 urlpatterns = [
-    # path('', LoginView.as_view(), name='home'), # TODO: remove this
     path('login/', LoginView.as_view(), name='login'),
     path('signup/', RegisterView.as_view(), name='signup'),
     path('logout/', logout_view, name='logout'),
