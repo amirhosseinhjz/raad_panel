@@ -1,4 +1,3 @@
-from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from raad.models import Company, Device, MessengerAdmin
 from raad.forms import MessengerAdminForm, DeviceUpdateForm
@@ -7,7 +6,6 @@ from django.http import HttpResponseNotFound
 from django.contrib.auth.mixins import UserPassesTestMixin
 
 
-@login_required
 def dashboard_view(request):
     if not request.user.is_authenticated:
         return redirect('raad:login')

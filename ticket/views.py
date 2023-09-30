@@ -10,6 +10,11 @@ class UserTicketListView(ListView):
     template_name = 'ticket/tickets.html'
     context_object_name = 'tickets'
 
+    def get(self, request, *args, **kwargs):
+        if not self.request.user.is_authenticated:
+            return redirect('raad:login')
+        return super().get(self, request, *args, **kwargs)
+
     def get_queryset(self):
         return Ticket.objects.filter(created_by=self.request.user).order_by('-created_at')
 
