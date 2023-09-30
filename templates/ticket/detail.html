@@ -81,8 +81,8 @@
 
 <div class="container">
     <h2>{{ ticket.title }}</h2>
-    <p><strong>تاریخ ایجاد:</strong> <span class="info">{{ ticket.created_at|to_jalali:'%y/%m/%d' }}</span></p>
-    <p><strong>تاریخ به روز رسانی:</strong> <span class="info">{{ ticket.updated_at|to_jalali:'%y/%m/%d' }}</span></p>
+    <p><strong>تاریخ ایجاد:</strong> <span class="info">{{ ticket.created_at|to_jalali:'%y/%m/%d %H:%M' }}</span></p>
+    <p><strong>تاریخ به روز رسانی:</strong> <span class="info">{{ ticket.updated_at|to_jalali:'%y/%m/%d %H:%M' }}</span></p>
     <p><strong>وضعیت:</strong> <span class="info">{{ ticket.status }}</span></p>
     <div class="form-group">
         <label for="ticket-description"><strong>توضیحات:</strong></label>
@@ -94,7 +94,7 @@
     <ul>
         {% for reply in replies %}
             <li>
-                <p><strong>کاربر: {{ reply.created_by.username }} | تاریخ ایجاد: {{ reply.created_at|to_jalali:'%H:%M:%S %y/%m/%d' }}</strong></p>
+                <p><strong>کاربر: {{ reply.created_by.username }} | تاریخ: {{ reply.created_at|to_jalali:'%H:%M %y/%m/%d' }}</strong></p>
                 <div class="form-group">
 <!--                    <label for="reply-{{ reply.id }}"><strong>پاسخ:</strong></label>-->
                     <textarea id="reply-{{ reply.id }}" class="form-control" rows="4" readonly>{{ reply.message }}</textarea>

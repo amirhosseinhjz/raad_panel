@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 
 class Ticket(models.Model):
@@ -23,6 +24,10 @@ class Ticket(models.Model):
         }
         status_str = status_choices.get(self.status.__str__(), 'نامشخص')
         return f"{self.title} ({status_str})"
+
+    def save(self, *args, **kwargs):
+        self.updated_at = timezone.now()
+        super().save(*args, **kwargs)
 
     class Meta:
         verbose_name_plural = "تیکت ها"

@@ -11,6 +11,7 @@
     <a href="{% url 'ticket:new_ticket' %}" class="btn btn-primary">
         <span class="glyphicon glyphicon-plus"></span> ثبت تیکت جدید
     </a>
+    {% if tickets %}
     <h2 style="color: #dddddd">تیکت‌های شما:</h2>
     <ul>
         {% for ticket in tickets %}
@@ -20,12 +21,13 @@
                     <span class="ticket-details">
                         وضعیت: {{ ticket.get_status_display }} |
                         تاریخ: {{ ticket.created_at|to_jalali:'%y/%m/%d' }} |
-                        تاریخ به روزرسانی: {{ ticket.updated_at|to_jalali:'%y/%m/%d' }}
+                        تاریخ به روزرسانی: {{ ticket.updated_at|to_jalali:'%y/%m/%d %H:%M' }}
                     </span>
                 </a>
             </li>
         {% endfor %}
     </ul>
+    {% endif %}
 </div>
 
 <style>

@@ -29,6 +29,7 @@ def ticket_detail(request, ticket_id):
             message = form.cleaned_data['message']
             reply = TicketReply.objects.create(ticket=ticket, created_by=request.user, message=message)
             reply.save()
+            ticket.save()
             return redirect('ticket:ticket_detail', ticket_id=ticket.id)
 
     else:
