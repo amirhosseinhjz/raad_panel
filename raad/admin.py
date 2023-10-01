@@ -8,9 +8,20 @@ class AllowedIpAdmin(admin.ModelAdmin):
     list_display = ('id', 'ip')
 
 
+class InlineDeviceAdmin(admin.TabularInline):
+    model = models.Device
+    extra = 1
+
+
+class InlineMessengerAdmin(admin.TabularInline):
+    model = models.MessengerAdmin
+    extra = 1
+
+
 @admin.register(models.Company)
 class CompanyAdmin(admin.ModelAdmin):
     form = CompanyAdminForm
+    inlines = [InlineDeviceAdmin, InlineMessengerAdmin]
 
     list_display = ('id', 'name', 'license_key', 'expiration_date')
     list_filter = ('expiration_date',)
