@@ -3,9 +3,16 @@ from raad import models
 from raad.forms import CompanyAdminForm
 
 
-@admin.register(models.AllowedIp)
+@admin.register(models.ServiceServerIp)
 class AllowedIpAdmin(admin.ModelAdmin):
     list_display = ('id', 'ip')
+
+
+@admin.register(models.ErrorLog)
+class ErrorLogAdmin(admin.ModelAdmin):
+    list_display = ('source', 'error_message', 'created_at')
+    search_fields = ('source', 'error_message')
+    readonly_fields = ('created_at',)
 
 
 class InlineDeviceAdmin(admin.TabularInline):

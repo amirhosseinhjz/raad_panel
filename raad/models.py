@@ -2,14 +2,21 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
 import uuid
+from datetime import datetime, timedelta
 
 
-class AllowedIp(models.Model):
+class ServiceServerIp(models.Model):
     id = models.AutoField(primary_key=True)
     ip = models.CharField(max_length=64, unique=True)
 
     def __str__(self):
         return self.ip
+
+
+class ErrorLog(models.Model):
+    source = models.TextField()
+    error_message = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
 
 class Company(models.Model):
@@ -18,11 +25,16 @@ class Company(models.Model):
     license_key = models.CharField(max_length=200, unique=True)
     expiration_date = models.DateTimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="companies")
+    demo = models.BooleanField(default=False)
+    deleted = models.BooleanField(default=False)
 
     def save(self, *args, **kwargs):
         if not self.name:
             company_count = self.user.companies.count()
             self.name = f'شرکت {company_count + 1}'
+
+        if self.demo and not self.id:
+            self.expiration_date = datetime.now() + timedelta(days=7)
 
         if not self.license_key:
             self.license_key = str(uuid.uuid4())[:30]
@@ -83,3 +95,5 @@ class MessengerAdmin(models.Model):
     class Meta:
         verbose_name_plural = "مدیرهای پیامرسان"
         verbose_name = "مدیر پیامرسان"
+
+

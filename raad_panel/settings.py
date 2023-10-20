@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'jalali_date',
     'ckeditor',
+    'django_cron',
     'raad',
     'ticket',
     'blog'

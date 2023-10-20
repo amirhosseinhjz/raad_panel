@@ -56,6 +56,13 @@
 </style>
 <div class="container">
     <h2>ثبت نام</h2>
+        <p style="color: white;">
+            {{ form.username.errors }}
+            {{ form.email.errors }}
+            {{ form.password1.errors }}
+            {{ form.password2.errors }}
+        </p>
+
     <form method="post">
         {% csrf_token %}
         <div class="input-group">
