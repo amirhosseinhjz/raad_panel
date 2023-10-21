@@ -6,7 +6,12 @@ def get_company_full_data(company):
         'name': company.name,
         'subClientsCount': company.devices.count(),
         'expirationDate': company.expiration_date,
-        'subClientNames': [device.name for device in company.devices.all()],
+        'subClients': [
+            {
+                'Name': device.name,
+                'DeviceId': device.device_id
+            } for device in company.devices.all()
+        ],
         'messengerUsers': [
             {
                 'messengerType': admin.messenger,

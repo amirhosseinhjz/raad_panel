@@ -69,3 +69,13 @@ class SyncFromWooCommerceCronJob(CronJobBase):
             company.user = user
             company.expiration_date = datetime.now() + timedelta(days=duration)
             company.save()
+
+        # TODO: send email
+        # email = instance.user.email
+        # subject = 'خرید اشتراک'
+        # message = ''
+        # send_email(
+        #     email,
+        #     subject=subject,
+        #     message=message
+        # )

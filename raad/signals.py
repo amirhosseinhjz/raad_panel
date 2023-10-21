@@ -1,15 +1,16 @@
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 import requests
-from raad.models import Company, Device, MessengerAdmin, ServiceServerIp, ErrorLog
+from raad.models import Company, Device, MessengerAdmin, ServiceServerIp, ErrorLog, SyncDataAPI
 from raad.UseCases.data_provider import get_company_full_data
+from raad.UseCases.send_email import send_email
+import json
 
 
 @receiver(post_save, sender=Company)
 def company_post_save(sender, instance, created, **kwargs):
     if created:
         pass
-#     TODO: send email
 
 
 @receiver(post_save, sender=Device)
@@ -27,19 +28,13 @@ def messenger_admin_post_save(sender, instance, created, **kwargs):
 
 
 def sync_company(data):
+    data = data if isinstance(data,str) else json.dumps(data)
+
     for ip_model in ServiceServerIp.objects.all():
         ip = ip_model.ip
         url = f"https://{ip}/your-endpoint"
 
-        try:
-            response = requests.post(url, json=data, timeout=10)
-            if response.status_code != 200:
-                ErrorLog.objects.create(
-                    source=url,
-                    error_message=str(response.status_code) + ' ' + response.json()
-                )
-        except requests.exceptions.RequestException as e:
-            ErrorLog.objects.create(
-                source=url,
-                error_message=str(e)
-            )
+        SyncDataAPI.objects.create(
+            url=url,
+            data=data
+        )

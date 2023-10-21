@@ -19,6 +19,19 @@ class ErrorLog(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
 
+class SyncDataAPI(models.Model):
+    STATUS_CHOICES = (
+        ('pending', 'Pending'),
+        ('success', 'Success'),
+        # ('failed', 'Failed'),
+    )
+
+    id = models.AutoField(primary_key=True)
+    url = models.CharField(max_length=200)
+    data = models.TextField()
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+
+
 class Company(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
@@ -41,10 +54,10 @@ class Company(models.Model):
 
         super(Company, self).save(*args, **kwargs)
 
-        if not self.devices.exists():
-            device = Device()
-            device.company = self
-            device.save()
+        # if not self.devices.exists():
+        #     device = Device()
+        #     device.company = self
+        #     device.save()
 
     def has_expired(self):
         return self.expiration_date < timezone.now()
@@ -60,6 +73,7 @@ class Company(models.Model):
 class Device(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
+    device_id = models.CharField(max_length=200)
     is_activated = models.BooleanField(default=False)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="devices")
 
