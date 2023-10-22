@@ -4,8 +4,7 @@ def get_company_full_data(company):
     return {
         'license': company.license_key,
         'name': company.name,
-        'subClientsCount': company.devices.count(),
-        'expirationDate': company.expiration_date,
+        'expirationDate': company.expiration_date.strftime("%Y-%m-%d"),
         'subClients': [
             {
                 'Name': device.name,

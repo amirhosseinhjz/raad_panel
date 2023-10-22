@@ -1,9 +1,6 @@
 from django_cron import CronJobBase, Schedule
-from raad.UseCases.get_new_orders import get_new_orders
-from django.contrib.auth.models import User
 from raad import models
-from raad.config import PRODUCT_COMPANY_DURATION_CONFIG
-from datetime import datetime, timedelta
+import requests
 
 
 class SyncDataToServersCronJob(CronJobBase):

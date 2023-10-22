@@ -1,0 +1,32 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: gunicorn --bind 0.0.0.0:8000 raad_panel.wsgi:application
+    volumes:
+      - .:/app
+    ports:
+      - "${NGINX_PORT}:8000"
+    depends_on:
+      - db
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+  db:
+    image: postgres
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+
+  nginx:
+    image: nginx:latest
+    ports:
+      - "${NGINX_PORT}:80"
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - web

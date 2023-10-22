@@ -1,11 +1,24 @@
 from django.contrib import admin
 from raad import models
-from raad.forms import CompanyAdminForm
+from raad.forms import CompanyAdminForm, DeviceAdminForm
 
 
-@admin.register(models.ServiceServerIp)
+@admin.register(models.AllowedIp)
 class AllowedIpAdmin(admin.ModelAdmin):
     list_display = ('id', 'ip')
+
+
+@admin.register(models.SyncServerUrl)
+class SyncServerUrlAdmin(admin.ModelAdmin):
+    list_display = ('id', 'url')
+
+
+@admin.register(models.SyncDataAPI)
+class SyncDataAPIAdmin(admin.ModelAdmin):
+    # list_display = ('source', 'error_message', 'created_at')
+    # search_fields = ('source', 'error_message')
+    # readonly_fields = ('created_at',)
+    pass
 
 
 @admin.register(models.ErrorLog)
@@ -37,6 +50,7 @@ class CompanyAdmin(admin.ModelAdmin):
 
 @admin.register(models.Device)
 class DeviceAdmin(admin.ModelAdmin):
+    form = DeviceAdminForm
     list_display = ('id', 'name', 'is_activated', 'company')
     list_filter = ('company',)
     search_fields = ('name', 'license_key')

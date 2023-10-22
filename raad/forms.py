@@ -29,3 +29,13 @@ class CompanyAdminForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['license_key'].required = False
+
+
+class DeviceAdminForm(forms.ModelForm):
+    class Meta:
+        model = Device
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['name'].required = False
