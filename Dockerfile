@@ -5,7 +5,7 @@ ENV PYTHONUNBUFFERED 1
 
 WORKDIR /app
 
-RUN apt-get update && apt-get install -y netcat-openbsd
+RUN apt-get update && apt-get install -y netcat-openbsd && apt-get -y install cron
 
 COPY r.txt /app/
 RUN pip install --no-cache-dir -r r.txt

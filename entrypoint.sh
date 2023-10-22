@@ -9,6 +9,9 @@ python manage.py migrate
 echo "Collecting static files..."
 python manage.py collectstatic --noinput
 
+chmod +x /app/crons_config.sh
+sh /app/crons_config.sh
+
 # Start Gunicorn server
 echo "Starting Gunicorn server..."
-gunicorn --bind 0.0.0.0:8000 raad_panel.wsgi:application
+cron && gunicorn --bind 0.0.0.0:8000 raad_panel.wsgi:application

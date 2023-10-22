@@ -7,9 +7,9 @@ from raad.UseCases.data_provider import get_company_full_data
 
 
 class SyncFullDataToServersCronJob(CronJobBase):
-    RUN_EVERY_DAYS = 3
+    RUN_EVERY_DAYS = 3 * 24 * 60
 
-    schedule = Schedule(run_every_days=RUN_EVERY_DAYS)
+    schedule = Schedule(run_every_mins=RUN_EVERY_DAYS)
 
     code = 'raad.sync_full_data_to_servers'
 
