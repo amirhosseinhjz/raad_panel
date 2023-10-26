@@ -1,5 +1,5 @@
 from django.urls import path
-from raad.views.authorization_views import LoginView, RegisterView, logout_view
+from raad.views.authorization_views import LoginView, RegisterView, logout_view, send_otp
 from raad.views.views import (
     dashboard_view, add_messenger_admin, MessengerAdminUpdateView,
     delete_messenger_admin, DeviceUpdateView)
@@ -8,6 +8,7 @@ app_name = 'raad'
 
 urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),
+    path('send_otp/', send_otp, name='send_otp'),
     path('signup/', RegisterView.as_view(), name='signup'),
     path('logout/', logout_view, name='logout'),
     path('dashboard/', dashboard_view, name='dashboard'),

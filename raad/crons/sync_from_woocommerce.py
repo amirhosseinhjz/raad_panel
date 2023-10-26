@@ -44,7 +44,7 @@ class SyncFromWooCommerceCronJob(CronJobBase):
                 user.save()
             return user
 
-        user = User.objects.create_user(username=email, email=email, password=None)
+        user = User.objects.create_user(username=phone, email=email, password=None)
         user.profile.phone = phone
         user.save()
         return user

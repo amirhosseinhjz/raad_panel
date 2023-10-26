@@ -6,53 +6,53 @@
 
 {% block content %}
 <style>
-            .input-group {
-            margin-bottom: 20px;
-        }
+    .input-group {
+        margin-bottom: 20px;
+    }
 
-        .input-group label {
-            color: #ffffff;
-            display: block;
-            margin-bottom: 5px;
-        }
+    .input-group label {
+        color: #ffffff;
+        display: block;
+        margin-bottom: 5px;
+    }
 
-        .input-group input {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #333;
-            border-radius: 5px;
-            background-color: #333;
-            color: #ffffff;
-        }
+    .input-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #333;
+        border-radius: 5px;
+        background-color: #333;
+        color: #ffffff;
+    }
 
-        .input-group input:focus {
-            outline: none;
-        }
+    .input-group input:focus {
+        outline: none;
+    }
 
-        .btn {
-            background-color: #007BFF;
-            color: #ffffff;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            width: 100%;
-        }
+    .btn {
+        background-color: #007BFF;
+        color: #ffffff;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 5px;
+        cursor: pointer;
+        width: 100%;
+    }
 
-        .btn:hover {
-            background-color: #0056b3;
-        }
+    .btn:hover {
+        background-color: #0056b3;
+    }
 
-        .message {
-            color: #ffffff;
-            text-align: center;
-            margin-top: 10px;
-        }
+    .message {
+        color: #ffffff;
+        text-align: center;
+        margin-top: 10px;
+    }
 
-        .message a {
-            color: #007BFF;
-            text-decoration: none;
-        }
+    .message a {
+        color: #007BFF;
+        text-decoration: none;
+    }
 </style>
 <div class="container">
     <form method="post">
@@ -66,7 +66,64 @@
             <input type="password" id="password" name="password" required>
         </div>
         <button type="submit" class="btn">ورود</button>
+        <br>
+        <br>
+        <button type="button" id="otp-button" class="btn">درخواست کد یکبار مصرف</button>
+        {% if messages %}
+            {% for message in messages %}
+                <p class="alert alert-{{ message.tags }}" style="color: red">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+        <p id="response-message" class="message" style="color: red"></p>
+        <p id="timer" style="display: none;color: whitesmoke">زمان باقی‌مانده: <span id="countdown">120</span> ثانیه</p>
     </form>
     <p class="message">حساب کاربری ندارید؟ <a href="{% url 'raad:signup' %}">ثبت نام</a></p>
 </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var otpButton = document.getElementById('otp-button');
+        var responseMessage = document.getElementById('response-message');
+
+        otpButton.addEventListener('click', function() {
+            var username = document.getElementById('username').value;
+            fetch('/send_otp/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ username: username })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message) {
+                    responseMessage.innerText = data.message;
+                } else {
+                    var timer = document.getElementById('timer');
+                    var countdown = document.getElementById('countdown');
+                    timer.style.display = 'block';
+                    otpButton.style.display = 'none';
+                    var seconds = 120;
+                    var interval = setInterval(function() {
+                        seconds--;
+                        countdown.textContent = seconds;
+                        if (seconds <= 0) {
+                            clearInterval(interval);
+                            timer.style.display = 'none';
+                            otpButton.style.display = 'block';
+                        }
+                    }, 1000);
+                    var passwordInput = document.getElementById('password');
+                    passwordInput.type = 'text';
+                    passwordInput.name = 'otp';
+                    var passwordLabel = document.querySelector('label[for="password"]');
+                    passwordLabel.textContent = 'کد یکبار مصرف';
+                    var loginButton = document.querySelector('button[type="submit"]');
+                    loginButton.textContent = 'ورود با کد یکبار مصرف';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    });
+</script>
 {% endblock %}

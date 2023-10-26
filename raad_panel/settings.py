@@ -109,7 +109,6 @@ DATABASES = {
     }
 }
 
-
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -162,3 +161,5 @@ CKEDITOR_CONFIGS = {
         'width': '100%',    # Set the width of the editor
     },
 }
+
+SMS_API_KEY = os.getenv('SMS_API_KEY')

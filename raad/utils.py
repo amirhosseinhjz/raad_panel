@@ -1,7 +1,7 @@
 from functools import wraps
 from django.http import HttpResponseForbidden
 from raad.models import AllowedIp
-
+import random
 
 def whitelist_ip(view_func):
     @wraps(view_func)
@@ -16,3 +16,5 @@ def whitelist_ip(view_func):
     return _wrapped_view
 
 
+def generate_otp():
+    return random.randint(1000, 9999)
