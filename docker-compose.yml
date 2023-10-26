@@ -28,7 +28,7 @@ services:
   nginx:
     image: nginx:latest
     ports:
-      - "${NGINX_PORT}:80"
+      - "${NGINX_PORT}:81"
     volumes:
       - ./nginx:/etc/nginx/conf.d
       - static_volume:/app/static
