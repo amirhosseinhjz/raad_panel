@@ -29,12 +29,11 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 SECRET_KEY = 'django-insecure-b#o4oy@=645e(*y0hw&@ohp-ffuz#)du$to-#dv55!tx1_j)!@'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.getenv('DEBUG', False))
+DEBUG = int(os.getenv('DEBUG', False))
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '').split(',')
 
-
-# Application definition
+CSRF_TRUSTED_ORIGINS = os.getenv('CSRF_TRUSTED_ORIGINS', '').split(',')
 
 INSTALLED_APPS = [
     'django.contrib.admin',
