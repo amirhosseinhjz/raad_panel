@@ -13,7 +13,7 @@ class SyncDataToServersCronJob(CronJobBase):
     def do(self):
         for item in models.SyncDataAPI.objects.filter(status='pending'):
             url = item.url
-            payload = item.payload
+            payload = item.data
             try:
                 response = requests.post(url, data=payload)
                 if response.status_code == 200:
