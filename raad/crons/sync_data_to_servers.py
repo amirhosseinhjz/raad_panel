@@ -4,7 +4,7 @@ import requests
 
 
 class SyncDataToServersCronJob(CronJobBase):
-    RUN_EVERY_MINUTES = 30
+    RUN_EVERY_MINUTES = 15
 
     schedule = Schedule(run_every_mins=RUN_EVERY_MINUTES)
 
@@ -15,7 +15,7 @@ class SyncDataToServersCronJob(CronJobBase):
             url = item.url
             payload = item.data
             try:
-                response = requests.post(url, data=payload)
+                response = requests.post(url, headers=self.get_headers(), data=payload)
                 if response.status_code == 200:
                     item.status = 'success'
                     item.save()
@@ -29,3 +29,9 @@ class SyncDataToServersCronJob(CronJobBase):
                 source=url,
                 error_message=error_message,
             )
+
+    @staticmethod
+    def get_headers():
+        return {
+            'Content-Type': 'application/json'
+        }
