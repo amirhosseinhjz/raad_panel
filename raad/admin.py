@@ -15,10 +15,8 @@ class SyncServerUrlAdmin(admin.ModelAdmin):
 
 @admin.register(models.SyncDataAPI)
 class SyncDataAPIAdmin(admin.ModelAdmin):
-    # list_display = ('source', 'error_message', 'created_at')
-    # search_fields = ('source', 'error_message')
-    # readonly_fields = ('created_at',)
-    pass
+    list_display = ('url', 'status', 'data')
+    search_fields = ('status',)
 
 
 @admin.register(models.ErrorLog)
@@ -42,7 +40,7 @@ class InlineMessengerAdmin(admin.TabularInline):
 class CompanyAdmin(admin.ModelAdmin):
     form = CompanyAdminForm
     inlines = [InlineDeviceAdmin, InlineMessengerAdmin]
-
+    raw_id_fields = ("user",)
     list_display = ('id', 'name', 'license_key', 'expiration_date')
     list_filter = ('expiration_date',)
     search_fields = ('name',)

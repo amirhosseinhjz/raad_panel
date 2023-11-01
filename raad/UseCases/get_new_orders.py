@@ -1,29 +1,41 @@
 import mysql.connector
+from django.conf import settings
+from raad.models import ConfigModel
 
 
 woocommerce_db_config = {
-    "host": "localhost",
-    "user": "root",
-    "passwd": "root",
-    "database": "wp"
+    "host": settings.WOOCOMMERCE_HOST,
+    "user": settings.WOOCOMMERCE_USER,
+    "passwd": settings.WOOCOMMERCE_PASSWORD,
+    "database": settings.WOOCOMMERCE_DB
 }
 
 
-last_order_id_file = "last_order_id.txt"
+LAST_ORDER_ID_CONFIG_KEY = "woocommerce_last_processed_order"
 query_limit = 10
 
 
 def get_last_order_id():
     try:
-        with open(last_order_id_file, "r") as f:
-            return int(f.read().strip())
-    except FileNotFoundError:
-        return 0
+        config = ConfigModel.get(key=LAST_ORDER_ID_CONFIG_KEY)
+    except ConfigModel.DoesNotExist:
+        config = ConfigModel.objects.create(
+            key=LAST_ORDER_ID_CONFIG_KEY,
+            value='0'
+        )
+    return int(config.value)
 
 
 def save_last_order_id(order_id):
-    with open(last_order_id_file, "w") as f:
-        f.write(str(order_id))
+    try:
+        config = ConfigModel.get(key=LAST_ORDER_ID_CONFIG_KEY)
+        config.value = str(order_id)
+        config.save()
+    except ConfigModel.DoesNotExist:
+        ConfigModel.objects.create(
+            key=LAST_ORDER_ID_CONFIG_KEY,
+            value=str(order_id)
+        )
 
 
 def get_new_orders():

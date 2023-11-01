@@ -162,3 +162,16 @@ CKEDITOR_CONFIGS = {
 }
 
 SMS_API_KEY = os.getenv('SMS_API_KEY')
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'mail.thundersoftware.net'
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
+DEFAULT_FROM_EMAIL = 'noreply@thundersoftware.net'
+
+WOOCOMMERCE_HOST = os.getenv('WOOCOMMERCE_HOST')
+WOOCOMMERCE_DB = os.getenv('WOOCOMMERCE_DB')
+WOOCOMMERCE_USER = os.getenv('WOOCOMMERCE_USER')
+WOOCOMMERCE_PASSWORD = os.getenv('WOOCOMMERCE_DB_PASSWORD')
