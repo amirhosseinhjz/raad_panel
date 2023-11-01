@@ -42,8 +42,9 @@ class SyncFullDataToServersCronJob(CronJobBase):
             raise e
 
     def send_data(self, url, data):
+        url = url + '/panel/SendAllClients'
         try:
-            requests.post(url=url, data=data)
+            requests.post(url=url, json=data)
         except requests.exceptions.RequestException as e:
             models.ErrorLog.objects.create(
                 source='send full data to: ' + url,
