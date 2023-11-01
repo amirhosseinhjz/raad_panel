@@ -8,10 +8,11 @@
 
 {% block content %}
 <div class="container">
+<h1>رعد</h1>
     {% for post in blogposts %}
     <div class="blog-post">
         <div class="post-border">
-            <h3 style="font-size: 24px; text-align: center;">{{ post.title }}</h3>
+            <h3 class="post-title">{{ post.title }}</h3>
             <div class="post-content">{{ post.content|safe }}</div>
 
             <div class="post-info">
@@ -27,71 +28,74 @@
     </div>
     {% endfor %}
 
-<div class="pagination">
-    <ul class="pagination-list">
-        {% if page_obj.has_previous %}
-            <li class="pagination-item">
-                <a href="?page=1" class="pagination-link pagination-previous">&laquo; اول</a>
-            </li>
-            <li class="pagination-item">
-                <a href="?page={{ paginator.previous_page_number }}" class="pagination-link pagination-previous">قبلی</a>
-            </li>
-        {% endif %}
+    <div class="pagination">
+        <ul class="pagination-list">
+            {% if page_obj.has_previous %}
+                <li class="pagination-item">
+                    <a href="?page=1" class="pagination-link pagination-previous">&laquo; اول</a>
+                </li>
+                <li class="pagination-item">
+                    <a href="?page={{ paginator.previous_page_number }}" class="pagination-link pagination-previous">قبلی</a>
+                </li>
+            {% endif %}
 
-        <li class="pagination-item">
-            <span class="pagination-current">
-                صفحه {{ page_obj.number }} از {{ paginator.num_pages }}
-            </span>
-        </li>
+            <li class="pagination-item">
+                <span class="pagination-current">
+                    صفحه {{ page_obj.number }} از {{ paginator.num_pages }}
+                </span>
+            </li>
 
-        {% if page_obj.has_next %}
-            <li class="pagination-item">
-                <a href="?page={{ page_obj.next_page_number }}" class="pagination-link pagination-next">بعدی</a>
-            </li>
-            <li class="pagination-item">
-                <a href="?page={{ paginator.num_pages }}" class="pagination-link pagination-next">آخر &raquo;</a>
-            </li>
-        {% endif %}
-    </ul>
-</div>
+            {% if page_obj.has_next %}
+                <li class="pagination-item">
+                    <a href="?page={{ page_obj.next_page_number }}" class="pagination-link pagination-next">بعدی</a>
+                </li>
+                <li class="pagination-item">
+                    <a href="?page={{ paginator.num_pages }}" class="pagination-link pagination-next">آخر &raquo;</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
 </div>
 
 <style>
     .blog-post {
-        border: 1px solid #ccc;
-        padding: 10px;
+        border: 1px solid #ddd;
+        padding: 20px;
         margin-bottom: 20px;
-        border-radius: 15px;
+        border-radius: 10px;
+        background-color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     }
 
     .post-border {
-        border: 1px solid #333;
+        border: 1px solid #e0e0e0;
         padding: 20px;
-        background-color: #f7f7f7;
+        background-color: #f9f9f9;
+        border-radius: 10px;
+    }
+
+    .post-title {
+        font-size: 24px;
         text-align: center;
-        border-radius: 20px;
+        color: #333;
+        margin-bottom: 10px;
     }
 
     .post-info {
         display: flex;
-        justify-content: flex-start;
-        margin-bottom: 10px;
+        justify-content: space-between;
+        margin-top: 20px;
+        color: #666;
     }
 
     .pub-date,
     .publisher {
-        margin: 0;
         font-size: 14px;
-        flex: 1;
-    }
-
-    .post-content {
-        /* Leave content alignment as-is */
     }
 
     .pagination {
         text-align: center;
-        margin-top: 20px;
+        margin-top: 40px;
     }
 
     .pagination-list {
@@ -117,21 +121,21 @@
         font-weight: bold;
         font-size: 16px;
     }
+
     .pagination-previous,
-.pagination-next {
-    background-color: #007BFF;
-    color: #fff;
-    padding: 5px 10px;
-    border-radius: 5px;
-    text-decoration: none;
-    margin: 0 3px;
-}
+    .pagination-next {
+        background-color: #007BFF;
+        color: #fff;
+        padding: 5px 10px;
+        border-radius: 5px;
+        text-decoration: none;
+        margin: 0 3px;
+    }
 
-.pagination-previous:hover,
-.pagination-next:hover {
-    background-color: #0056b3;
-}
-
+    .pagination-previous:hover,
+    .pagination-next:hover {
+        background-color: #0056b3;
+    }
 </style>
 
 {% endblock %}

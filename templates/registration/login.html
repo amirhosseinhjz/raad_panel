@@ -8,10 +8,11 @@
 <style>
     .input-group {
         margin-bottom: 20px;
+        width: 97%;
     }
 
     .input-group label {
-        color: #ffffff;
+        color: #000000;
         display: block;
         margin-bottom: 5px;
     }
@@ -77,7 +78,6 @@
         <p id="response-message" class="message" style="color: red"></p>
         <p id="timer" style="display: none;color: whitesmoke">زمان باقی‌مانده: <span id="countdown">120</span> ثانیه</p>
     </form>
-    <p class="message">حساب کاربری ندارید؟ <a href="{% url 'raad:signup' %}">ثبت نام</a></p>
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
