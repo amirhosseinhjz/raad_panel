@@ -3,6 +3,11 @@ from raad import models
 from raad.forms import CompanyAdminForm, DeviceAdminForm
 
 
+@admin.register(models.ConfigModel)
+class ConfigurationAdmin(admin.ModelAdmin):
+    pass
+
+
 @admin.register(models.AllowedIp)
 class AllowedIpAdmin(admin.ModelAdmin):
     list_display = ('id', 'ip')

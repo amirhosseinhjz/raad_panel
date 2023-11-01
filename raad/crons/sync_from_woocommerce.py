@@ -17,9 +17,9 @@ class SyncFromWooCommerceCronJob(CronJobBase):
         try:
             while orders := get_new_orders():
                 for order in orders:
-                    user = self.get_order_create_user(order)
+                    user = self.get_or_create_user(order)
                     for order_item in order['items']:
-                        self.create_company(order_item, user)
+                        self.create_data(order_item, user)
         except Exception as e:
             error = models.ErrorLog()
             error.source = 'sync_data_from_woocommerce'
@@ -28,7 +28,7 @@ class SyncFromWooCommerceCronJob(CronJobBase):
             raise e
 
     @staticmethod
-    def get_order_create_user(order_data):
+    def get_or_create_user(order_data):
         email = order_data['order_user_email']
         phone = order_data['order_user_phone']
 
@@ -47,6 +47,23 @@ class SyncFromWooCommerceCronJob(CronJobBase):
         user = User.objects.create_user(username=phone, email=email, password=phone)
         user.save()
         return user
+
+    @staticmethod
+    def create_data(order_item_data, user):
+        try:
+            company = models.Company.objects.get(user=user)
+        except models.Company.DoesNotExist:
+            company = models.Company.objects.create(
+                user=user,
+                expiration_date=datetime.now() + timedelta(days=365)
+            )
+
+        quantity = int(order_item_data['qty'])
+
+        for _ in range(quantity):
+            models.Device.objects.create(
+                company=company
+            )
 
     @staticmethod
     def create_company(order_item_data, user):
