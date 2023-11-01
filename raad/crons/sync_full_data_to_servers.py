@@ -15,7 +15,7 @@ class SyncFullDataToServersCronJob(CronJobBase):
 
     def do(self):
         try:
-            all_companies = Company.objects.all()
+            all_companies = Company.objects.all().order_by('id')
             paginator = Paginator(all_companies, 1000)
 
             page_number = 1
@@ -25,16 +25,20 @@ class SyncFullDataToServersCronJob(CronJobBase):
                 for company in companies_page.object_list:
                     data = get_company_full_data(company)
                     company_list.append(data)
+                models.ErrorLog.objects.create(
+                    source='full_data_log',
+                    error_message=str(company_list)
+                )
 
                 for server in models.SyncServerUrl.objects.all():
                     self.send_data(server.url, company_list)
 
                 page_number += 1
         except Exception as e:
-            error = models.ErrorLog()
-            error.source = 'sync_full_data_to_servers'
-            error.error_message = str(e)
-            error.save()
+            models.ErrorLog.objects.create(
+                source='sync_full_data_to_servers',
+                error_message=str(e)
+            )
             raise e
 
     def send_data(self, url, data):
