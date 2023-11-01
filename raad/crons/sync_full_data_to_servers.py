@@ -25,10 +25,6 @@ class SyncFullDataToServersCronJob(CronJobBase):
                 for company in companies_page.object_list:
                     data = get_company_full_data(company)
                     company_list.append(data)
-                models.ErrorLog.objects.create(
-                    source='full_data_log',
-                    error_message=str(company_list)
-                )
 
                 for server in models.SyncServerUrl.objects.all():
                     self.send_data(server.url, company_list)
