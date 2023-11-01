@@ -36,10 +36,15 @@ class SyncDataAPI(models.Model):
         ('success', 'Success'),
         # ('failed', 'Failed'),
     )
+    REQUEST_METHOD_CHOICES = (
+        ('get', 'Get'),
+        ('post', 'Post'),
+    )
 
     id = models.AutoField(primary_key=True)
     url = models.CharField(max_length=200)
     data = models.TextField()
+    method = models.CharField(max_length=20, choices=REQUEST_METHOD_CHOICES, default='get')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
 
     def __str__(self):
@@ -60,6 +65,11 @@ class Company(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="companies")
     demo = models.BooleanField(default=False)
     deleted = models.BooleanField(default=False)
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['expiration_date']),
+        ]
 
     def save(self, *args, **kwargs):
         if not self.name:

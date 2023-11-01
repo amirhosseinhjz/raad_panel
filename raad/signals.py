@@ -34,13 +34,18 @@ def messenger_admin_post_save(sender, instance, created, **kwargs):
     sync_company(data)
 
 
+SYNC_COMPANY_URI = '/panel/SendClient'
+
+
 def sync_company(data):
+
     data = data if isinstance(data, str) else json.dumps(data)
 
     for server_model in SyncServerUrl.objects.all():
-        url = server_model.url
+        url = server_model.url + SYNC_COMPANY_URI
 
         SyncDataAPI.objects.create(
             url=url,
-            data=data
+            data=data,
+            method='post'
         )

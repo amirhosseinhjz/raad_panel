@@ -18,7 +18,7 @@ query_limit = 10
 
 def get_last_order_id():
     try:
-        config = ConfigModel.get(key=LAST_ORDER_ID_CONFIG_KEY)
+        config = ConfigModel.objects.get(key=LAST_ORDER_ID_CONFIG_KEY)
     except ConfigModel.DoesNotExist:
         config = ConfigModel.objects.create(
             key=LAST_ORDER_ID_CONFIG_KEY,
@@ -29,7 +29,7 @@ def get_last_order_id():
 
 def save_last_order_id(order_id):
     try:
-        config = ConfigModel.get(key=LAST_ORDER_ID_CONFIG_KEY)
+        config = ConfigModel.objects.get(key=LAST_ORDER_ID_CONFIG_KEY)
         config.value = str(order_id)
         config.save()
     except ConfigModel.DoesNotExist:
