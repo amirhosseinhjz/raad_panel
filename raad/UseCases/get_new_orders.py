@@ -5,6 +5,7 @@ from raad.models import ConfigModel
 
 woocommerce_db_config = {
     "host": settings.WOOCOMMERCE_HOST,
+    "port": 3306,
     "user": settings.WOOCOMMERCE_USER,
     "passwd": settings.WOOCOMMERCE_PASSWORD,
     "database": settings.WOOCOMMERCE_DB

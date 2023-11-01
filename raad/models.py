@@ -5,6 +5,12 @@ import uuid
 from datetime import datetime, timedelta
 
 
+class ConfigModel(models.Model):
+    id = models.AutoField(primary_key=True)
+    key = models.CharField(max_length=200, unique=True)
+    value = models.CharField(max_length=200)
+
+
 class SyncServerUrl(models.Model):
     id = models.AutoField(primary_key=True)
     url = models.CharField(max_length=200, unique=True)
@@ -35,6 +41,9 @@ class SyncDataAPI(models.Model):
     url = models.CharField(max_length=200)
     data = models.TextField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+
+    def __str__(self):
+        return self.url
 
 
 class OTP(models.Model):

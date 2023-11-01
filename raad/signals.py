@@ -4,20 +4,24 @@ from raad.models import Company, Device, MessengerAdmin, SyncServerUrl, ErrorLog
 from raad.UseCases.data_provider import get_company_full_data
 import json
 from raad.UseCases import sms_service
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 @receiver(post_save, sender=Company)
 def company_post_save(sender, instance, created, **kwargs):
-    if created:
-        sms_service.send_succesful_buy(instance.user.username)
+    # if created:
+    #     sms_service.send_succesful_buy(instance.user.username)
     data = get_company_full_data(instance)
     sync_company(data)
 
 
 @receiver(post_save, sender=Device)
 def device_post_save(sender, instance, created, **kwargs):
-    # if created:
-    #     sms_service.send_succesful_buy(instance.user.username)
+    if created:
+        sms_service.send_succesful_buy(instance.company.user.username, fail_silently=True)
+        if email := instance.company.user.email:
+            send_mail(from_email=settings.DEFAULT_FROM_EMAIL, subject='گروه نرم افزاری رعد-سفارش موفق', message='', recipient_list=[email], fail_silently=True)
     company = instance.company
     data = get_company_full_data(company)
     sync_company(data)
