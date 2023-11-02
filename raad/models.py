@@ -13,6 +13,7 @@ class ConfigModel(models.Model):
     def __str__(self):
         return self.key
 
+
 class SyncServerUrl(models.Model):
     id = models.AutoField(primary_key=True)
     url = models.CharField(max_length=200, unique=True)
@@ -108,6 +109,7 @@ class Device(models.Model):
     device_id = models.CharField(max_length=200, blank=True, default='')
     is_activated = models.BooleanField(default=False)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="devices")
+    notify_user = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name

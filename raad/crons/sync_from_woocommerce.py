@@ -1,9 +1,13 @@
 from django_cron import CronJobBase, Schedule
 from raad.UseCases.get_new_orders import get_new_orders
+from raad.UseCases.sms_service import send_succesful_buy
 from django.contrib.auth.models import User
 from raad import models
 from raad.config import PRODUCT_COMPANY_DURATION_CONFIG
 from datetime import datetime, timedelta
+from django.core.mail import send_mail
+from django.conf import settings
+from raad.UseCases import texts
 
 
 class SyncFromWooCommerceCronJob(CronJobBase):
@@ -60,10 +64,16 @@ class SyncFromWooCommerceCronJob(CronJobBase):
 
         quantity = int(order_item_data['qty'])
 
+        devices = []
         for _ in range(quantity):
-            models.Device.objects.create(
-                company=company
+            device = models.Device.objects.create(
+                company=company,
+                notify_user=False
             )
+            devices.append(device)
+        send_mail(from_email=settings.DEFAULT_FROM_EMAIL, subject='گروه نرم افزاری رعد-سفارش موفق', message=texts.SUCCESSFUL_EMAIL_MESSAGE,
+                  recipient_list=[company.user.email], fail_silently=True)
+        send_succesful_buy(company.user.username, fail_silently=True)
 
     @staticmethod
     def create_company(order_item_data, user):

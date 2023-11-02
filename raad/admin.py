@@ -33,6 +33,7 @@ class ErrorLogAdmin(admin.ModelAdmin):
 
 class InlineDeviceAdmin(admin.TabularInline):
     model = models.Device
+    exclude = ('notify_user',)
     extra = 1
 
 
@@ -57,7 +58,7 @@ class DeviceAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'is_activated', 'company')
     list_filter = ('company',)
     search_fields = ('name', 'license_key')
-
+    exclude = ('notify_user',)
 
 @admin.register(models.MessengerAdmin)
 class MessengerAdminAdmin(admin.ModelAdmin):
