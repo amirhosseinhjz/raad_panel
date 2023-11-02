@@ -3,13 +3,13 @@ from raad.models import Device, Company
 
 def validate_license_key_use_case(sub_id, device_id, license_key):
     company = Company.objects.filter(license_key=license_key).first()
-    if company is None:
+    if company is None or not str(sub_id).isnumeric():
         return {
                 'code': -1,
                 'message': 'invalid DeviceId or LicenseKey'
         }
 
-    device = Device.objects.filter(company=company).filter(sub_id=sub_id).first()
+    device = Device.objects.filter(company=company).filter(sub_id=int(sub_id)).first()
 
     if device is None:
         return {
