@@ -1,4 +1,9 @@
 
+MESSENGER_INTEGER_ID = {
+    'telegram': 0,
+    'bale': 1
+}
+
 
 def get_company_full_data(company):
     return {
@@ -13,7 +18,7 @@ def get_company_full_data(company):
         ],
         'messengerUsers': [
             {
-                'messengerType': admin.messenger,
+                'messengerType': MESSENGER_INTEGER_ID[admin.messenger],
                 'accountId': admin.admin_messenger_id
             } for admin in company.admins.all()
         ]
