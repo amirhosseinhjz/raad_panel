@@ -13,6 +13,7 @@ def get_company_full_data(company):
         'subClients': [
             {
                 'Name': device.name,
+                'SubId': device.id,
                 'DeviceId': device.device_id
             } for device in company.devices.all()
         ],
