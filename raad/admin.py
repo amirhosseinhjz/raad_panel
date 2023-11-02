@@ -55,7 +55,7 @@ class CompanyAdmin(admin.ModelAdmin):
 @admin.register(models.Device)
 class DeviceAdmin(admin.ModelAdmin):
     form = DeviceAdminForm
-    list_display = ('id', 'name', 'is_activated', 'company')
+    list_display = ('id', 'name', 'device_id', 'company')
     list_filter = ('company',)
     search_fields = ('name', 'license_key')
     exclude = ('notify_user',)

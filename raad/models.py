@@ -107,7 +107,6 @@ class Device(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
     device_id = models.CharField(max_length=200, blank=True, default='')
-    is_activated = models.BooleanField(default=False)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="devices")
     notify_user = models.BooleanField(default=True)
 
