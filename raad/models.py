@@ -72,6 +72,7 @@ class Company(models.Model):
     class Meta:
         indexes = [
             models.Index(fields=['expiration_date']),
+            models.Index(fields=['license_key']),
         ]
 
     def save(self, *args, **kwargs):
@@ -107,6 +108,7 @@ class Device(models.Model):
     id = models.AutoField(primary_key=True)
     name = models.CharField(max_length=200)
     device_id = models.CharField(max_length=200, blank=True, default='')
+    sub_id = models.IntegerField(default=1)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="devices")
     notify_user = models.BooleanField(default=True)
 
@@ -114,10 +116,12 @@ class Device(models.Model):
         return self.name
 
     def save(self, *args, **kwargs):
+        devices_count = self.company.devices.count()
         if not self.name:
-            devices_count = self.company.devices.count()
             self.name = f'دستگاه {devices_count + 1}'
 
+        if not self.sub_id:
+            self.sub_id = devices_count + 1
         super(Device, self).save(*args, **kwargs)
 
     class Meta:
