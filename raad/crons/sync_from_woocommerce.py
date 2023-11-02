@@ -39,9 +39,9 @@ class SyncFromWooCommerceCronJob(CronJobBase):
             return user
 
         if user := User.objects.filter(email=email).first():
-            if user.profile.phone is None:
-                user.profile.phone = phone
-                user.save()
+            # if user.profile.phone is None:
+            #     user.profile.phone = phone
+            #     user.save()
             return user
 
         user = User.objects.create_user(username=phone, email=email, password=phone)
