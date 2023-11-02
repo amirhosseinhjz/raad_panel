@@ -83,7 +83,7 @@ class Company(models.Model):
             self.expiration_date = datetime.now() + timedelta(days=7)
 
         if not self.license_key:
-            self.license_key = str(uuid.uuid4())[:30]
+            self.license_key = str(uuid.uuid4())[:34].replace('-', '')
 
         super(Company, self).save(*args, **kwargs)
 
