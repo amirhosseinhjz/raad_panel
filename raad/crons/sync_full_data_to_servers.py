@@ -15,7 +15,7 @@ class SyncFullDataToServersCronJob(CronJobBase):
 
     def do(self):
         try:
-            all_companies = Company.objects.all().order_by('id')
+            all_companies = Company.get_all_active().order_by('id')
             paginator = Paginator(all_companies, 1000)
 
             page_number = 1

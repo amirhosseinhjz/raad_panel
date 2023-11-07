@@ -103,6 +103,10 @@ class Company(models.Model):
         verbose_name_plural = "شرکت ها"
         verbose_name = "شرکت"
 
+    @staticmethod
+    def get_all_active():
+        return Company.objects.filter(deleted=False)
+
 
 class Device(models.Model):
     id = models.AutoField(primary_key=True)
