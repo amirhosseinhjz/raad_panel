@@ -8,7 +8,7 @@ from datetime import datetime, timedelta
 from django.core.mail import send_mail
 from django.conf import settings
 from raad.UseCases import texts
-
+from raad.utils import normalize_phone
 
 class SyncFromWooCommerceCronJob(CronJobBase):
     RUN_EVERY_MINUTES = 5
@@ -34,7 +34,7 @@ class SyncFromWooCommerceCronJob(CronJobBase):
     @staticmethod
     def get_or_create_user(order_data):
         email = order_data['order_user_email']
-        phone = order_data['order_user_phone']
+        phone = normalize_phone(order_data['order_user_phone'])
 
         if user := User.objects.filter(username=phone).first():
             if user.email is None:

@@ -18,3 +18,7 @@ def whitelist_ip(view_func):
 
 def generate_otp():
     return random.randint(1000, 9999)
+
+
+def normalize_phone(phone):
+    return '0' + phone[-10:]

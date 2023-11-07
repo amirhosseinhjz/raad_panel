@@ -7,7 +7,7 @@ from django.shortcuts import redirect
 from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from django.contrib.auth.models import User
-from raad.utils import generate_otp
+from raad.utils import generate_otp, normalize_phone
 from raad.models import OTP
 from raad.UseCases import sms_service
 from django.views.decorators.csrf import csrf_exempt
@@ -28,6 +28,7 @@ class LoginView(BaseLoginView):
 
     def post(self, request, *args, **kwargs):
         username = request.POST.get('username')
+        username = normalize_phone(username)
         password = request.POST.get('password')
         otp = request.POST.get('otp')
 
@@ -63,7 +64,7 @@ def logout_view(request):
 def send_otp(request):
     body = json.loads(request.body)
     username = body.get('username', None)
-
+    username = normalize_phone(username)
     try:
         user = User.objects.get(username=username)
     except User.DoesNotExist:
