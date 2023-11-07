@@ -36,9 +36,9 @@ def get_user_companies(request):
 
         companies = Company.objects.filter(user=user)
 
-        response = [{'id': company.id, 'name': company.name} for company in companies]
+        data = [{'id': company.id, 'name': company.name} for company in companies]
 
-        return JsonResponse(response)
+        return JsonResponse({'phone_number': phone_number, 'data': data})
     except Exception as e:
         response_data = {'error': str(e)}
         return JsonResponse(response_data, status=400)
