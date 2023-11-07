@@ -8,8 +8,8 @@ services:
       - .:/app
       - ${STATIC_ROOT}:/app/static
 #      - static_volume:/app/static
-    #    ports:
-#      - "${NGINX_PORT}:8000"
+    ports:
+      - "${LOCAL_APP_PORT}:8000"
     depends_on:
       - db
     environment:
