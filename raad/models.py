@@ -135,7 +135,6 @@ class Device(models.Model):
 
 class MessengerAdmin(models.Model):
     MESSENGER_CHOICES = [
-        ('bale', 'Bale'),
         ('telegram', 'Telegram'),
     ]
 
