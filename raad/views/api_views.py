@@ -7,6 +7,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from raad.models import Company
 from raad.utils import normalize_phone
+from raad.UseCases.data_provider import get_company_full_data
 
 
 @csrf_exempt
@@ -41,6 +42,22 @@ def get_user_companies(request):
         data = [{'id': company.id, 'name': company.name} for company in companies]
 
         return JsonResponse({'phone_number': phone_number, 'data': data})
+    except Exception as e:
+        response_data = {'error': str(e)}
+        return JsonResponse(response_data, status=400)
+
+
+@csrf_exempt
+def get_full_companies_data(request):
+    try:
+        companies = Company.get_all_active()
+
+        data = []
+
+        for company in companies:
+            data.append(get_company_full_data(company))
+
+        return JsonResponse({'data': data})
     except Exception as e:
         response_data = {'error': str(e)}
         return JsonResponse(response_data, status=400)

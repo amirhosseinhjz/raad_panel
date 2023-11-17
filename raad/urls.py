@@ -3,7 +3,11 @@ from raad.views.authorization_views import LoginView, RegisterView, logout_view,
 from raad.views.views import (
     dashboard_view, add_messenger_admin, MessengerAdminUpdateView,
     delete_messenger_admin, DeviceUpdateView)
-from raad.views.api_views import validate_license_key, get_user_companies, get_company_not_activated_devices
+from raad.views.api_views import (
+    validate_license_key,
+    get_user_companies,
+    get_company_not_activated_devices,
+    get_full_companies_data)
 
 app_name = 'raad'
 
@@ -20,4 +24,5 @@ urlpatterns = [
     path('license/validate/', validate_license_key, name='validate_serial'),
     path('get_user_companies/', get_user_companies, name='get_user_companies'),
     path('get_company_devices/', get_company_not_activated_devices, name='get_company_not_activated_devices'),
+    path('get_full_data/', get_full_companies_data, name='get_full_companies_data'),
 ]
