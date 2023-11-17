@@ -7,6 +7,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.models import User
 from raad.models import Company
 from raad.utils import normalize_phone
+
+
 @csrf_exempt
 @require_POST
 def validate_license_key(request):
@@ -42,3 +44,32 @@ def get_user_companies(request):
     except Exception as e:
         response_data = {'error': str(e)}
         return JsonResponse(response_data, status=400)
+
+
+@csrf_exempt
+@require_POST
+def get_company_not_activated_devices(request):
+    try:
+        data = json.loads(request.body.decode('utf-8'))
+        license_key = data.get('license_key', '')
+
+        company = Company.objects.filter(license_key=license_key).first()
+        if company is None:
+            return {
+                'code': -1,
+                'message': 'invalid DeviceId or LicenseKey'
+            }
+
+        response = {
+            'license_key': license_key,
+            'devices': [
+                {'sub_id': device.sub_id, 'name': device.name}
+                for device in company.devices.all() if not device.device_id]
+        }
+
+        return JsonResponse({'data': response})
+
+    except Exception as e:
+        response_data = {'error': str(e)}
+        return JsonResponse(response_data, status=400)
+
