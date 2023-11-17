@@ -48,6 +48,7 @@ def get_user_companies(request):
 
 
 @csrf_exempt
+@whitelist_ip
 def get_full_companies_data(request):
     try:
         companies = Company.get_all_active()
