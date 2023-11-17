@@ -52,6 +52,7 @@ def get_company_not_activated_devices(request):
     try:
         data = json.loads(request.body.decode('utf-8'))
         license_key = data.get('license_key', '')
+        device_id = data.get('device_id', '')
 
         company = Company.objects.filter(license_key=license_key).first()
         if company is None:
@@ -64,7 +65,7 @@ def get_company_not_activated_devices(request):
             'license_key': license_key,
             'devices': [
                 {'sub_id': str(device.sub_id), 'name': str(device.name)}
-                for device in company.devices.all() if not device.device_id]
+                for device in company.devices.all() if (not device.device_id or device.device_id == device_id)]
         }
 
         return JsonResponse({'data': response})
