@@ -33,7 +33,7 @@ class ErrorLogAdmin(admin.ModelAdmin):
 
 class InlineDeviceAdmin(admin.TabularInline):
     model = models.Device
-    exclude = ('notify_user',)
+    exclude = ('notify_for_created',)
     readonly_fields = ('sub_id',)
     extra = 1
 
@@ -51,6 +51,7 @@ class CompanyAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'license_key', 'expiration_date')
     list_filter = ('expiration_date',)
     search_fields = ('name',)
+    exclude = ('notify_for_created',)
 
 
 @admin.register(models.Device)
@@ -60,7 +61,7 @@ class DeviceAdmin(admin.ModelAdmin):
     list_filter = ('company',)
     search_fields = ('name', 'license_key')
     readonly_fields = ('sub_id',)
-    exclude = ('notify_user',)
+    exclude = ('notify_for_created',)
 
 
 @admin.register(models.MessengerAdmin)

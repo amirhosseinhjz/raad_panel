@@ -68,11 +68,13 @@ class Company(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="companies")
     demo = models.BooleanField(default=False)
     deleted = models.BooleanField(default=False)
+    notify_for_created = models.BooleanField(default=True)
 
     class Meta:
         indexes = [
             models.Index(fields=['expiration_date']),
             models.Index(fields=['license_key']),
+            models.Index(fields=['notify_for_created']),
         ]
 
     def save(self, *args, **kwargs):
@@ -114,7 +116,7 @@ class Device(models.Model):
     device_id = models.CharField(max_length=200, blank=True, default='')
     sub_id = models.IntegerField(blank=True)
     company = models.ForeignKey(Company, on_delete=models.CASCADE, related_name="devices")
-    notify_user = models.BooleanField(default=True)
+    notify_for_created = models.BooleanField(default=True)
 
     def __str__(self):
         return self.name
@@ -131,6 +133,9 @@ class Device(models.Model):
     class Meta:
         verbose_name_plural = "دستگاه ها"
         verbose_name = "دستگاه"
+        indexes = [
+            models.Index(fields=['notify_for_created']),
+        ]
 
 
 class MessengerAdmin(models.Model):
@@ -149,5 +154,4 @@ class MessengerAdmin(models.Model):
     class Meta:
         verbose_name_plural = "مدیرهای پیامرسان"
         verbose_name = "مدیر پیامرسان"
-
 
