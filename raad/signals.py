@@ -19,10 +19,10 @@ def company_post_save(sender, instance, created, **kwargs):
 
 @receiver(post_save, sender=Device)
 def device_post_save(sender, instance, created, **kwargs):
-    if created and instance.notify_user:
-        sms_service.send_succesful_buy(instance.company.user.username, fail_silently=True)
-        if email := instance.company.user.email:
-            send_mail(from_email=settings.DEFAULT_FROM_EMAIL, subject='گروه نرم افزاری رعد-سفارش موفق', message=texts.SUCCESSFUL_EMAIL_MESSAGE, recipient_list=[email], fail_silently=True)
+    # if created and instance.notify_user:
+    #     sms_service.send_succesful_buy(instance.company.user.username, fail_silently=True)
+    #     if email := instance.company.user.email:
+    #         send_mail(from_email=settings.DEFAULT_FROM_EMAIL, subject='گروه نرم افزاری رعد-سفارش موفق', message=texts.SUCCESSFUL_EMAIL_MESSAGE, recipient_list=[email], fail_silently=True)
     company = instance.company
     data = get_company_full_data(company)
     sync_company(data)

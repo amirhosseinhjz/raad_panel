@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #ffffff;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 20px auto;
+      border: 1px solid #dddddd;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    header {
+      background-color: #931F1D;
+      padding: 20px;
+      text-align: center;
+    }
+
+    header img {
+      max-width: 100px;
+    }
+
+    section {
+      padding: 20px;
+    }
+
+    .order-info, .scenario {
+      margin-bottom: 20px;
+    }
+
+    .order-info h2, .scenario h3 {
+      color: #931F1D;
+    }
+
+    .scenario table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    .scenario th, .scenario td {
+      border: 1px solid #dddddd;
+      padding: 8px;
+      text-align: center;
+    }
+
+    .scenario th {
+      background-color: #937B63;
+      color: #ffffff;
+    }
+
+    .scenario p {
+      color: #000000;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <img src="https://thundersoftware.net/wp-content/uploads/2023/10/512.png" alt="Thunder Software Logo">
+    </header>
+
+    <section class="order-info">
+      <h2>{{ company.name }} - سفارش شما با موفقیت تکمیل شده است</h2>
+      <p>جزئیات سفارش شما:</p>
+      <!-- Include order details for Scenario #2 here -->
+    </section>
+
+    <section class="scenario">
+      <h3>سرور و کاربر اضافی</h3>
+      <table>
+        <tr>
+          <th>کد لایسنس (سرور)</th>
+        </tr>
+        <tr>
+          <td>{{ company.license_key }}</td>
+        </tr>
+      </table>
+      <!-- Add a visual separator here (e.g., a line) -->
+      <hr>
+      <table>
+        <tr>
+          <th>کد لایسنس (کاربر اضافی)</th>
+        </tr>
+        {% if devices %}
+          {% for device in devices %}
+            <tr>
+              <td>{{ device.name }}</td>
+            </tr>
+          {% endfor %}
+        {% endif %}
+      </table>
+    </section>
+  </div>
+</body>
+</html>

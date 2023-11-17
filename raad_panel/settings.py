@@ -64,6 +64,7 @@ CRON_CLASSES = [
     "raad.crons.sync_data_to_servers.SyncDataToServersCronJob",
     "raad.crons.sync_from_woocommerce.SyncFromWooCommerceCronJob",
     "raad.crons.sync_full_data_to_servers.SyncFullDataToServersCronJob",
+    "raad.crons.notify_user_for_purchase.NotifyUserNewPurchaseCronJob",
 ]
 
 
@@ -72,7 +73,7 @@ ROOT_URLCONF = 'raad_panel.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates'),],
+        'DIRS': [os.path.join(BASE_DIR, 'templates'), ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -139,11 +140,6 @@ USE_I18N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-STATIC_URL = 'static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
