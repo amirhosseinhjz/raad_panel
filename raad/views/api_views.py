@@ -55,15 +55,15 @@ def get_company_not_activated_devices(request):
 
         company = Company.objects.filter(license_key=license_key).first()
         if company is None:
-            return {
+            return JsonResponse({
                 'code': -1,
-                'message': 'invalid DeviceId or LicenseKey'
-            }
+                'message': 'invalid LicenseKey'
+            })
 
         response = {
             'license_key': license_key,
             'devices': [
-                {'sub_id': device.sub_id, 'name': device.name}
+                {'sub_id': str(device.sub_id), 'name': str(device.name)}
                 for device in company.devices.all() if not device.device_id]
         }
 
@@ -72,4 +72,3 @@ def get_company_not_activated_devices(request):
     except Exception as e:
         response_data = {'error': str(e)}
         return JsonResponse(response_data, status=400)
-
