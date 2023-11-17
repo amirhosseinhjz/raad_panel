@@ -127,6 +127,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+
 
 # Internationalization
 # https://docs.djangoproject.com/en/4.2/topics/i18n/
