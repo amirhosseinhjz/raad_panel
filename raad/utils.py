@@ -7,7 +7,7 @@ import random
 def whitelist_ip(view_func):
     @wraps(view_func)
     def _wrapped_view(request, *args, **kwargs):
-        user_ip = request.META.get('REMOTE_ADDR')
+        user_ip = request.META.get('HTTP_X_FORWARDED_FOR', '').split(',')[0] or request.META.get('REMOTE_ADDR')
 
         if AllowedIp.objects.filter(ip=user_ip).exists():
             return view_func(request, *args, **kwargs)
