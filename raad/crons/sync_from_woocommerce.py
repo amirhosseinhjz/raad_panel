@@ -8,7 +8,7 @@ from raad.utils import normalize_phone
 
 
 class SyncFromWooCommerceCronJob(CronJobBase):
-    RUN_EVERY_MINUTES = 5
+    RUN_EVERY_MINUTES = 1
 
     schedule = Schedule(run_every_mins=RUN_EVERY_MINUTES)
 

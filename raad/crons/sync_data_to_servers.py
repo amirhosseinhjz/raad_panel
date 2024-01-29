@@ -4,7 +4,7 @@ import requests
 
 
 class SyncDataToServersCronJob(CronJobBase):
-    RUN_EVERY_MINUTES = 15
+    RUN_EVERY_MINUTES = 1
 
     schedule = Schedule(run_every_mins=RUN_EVERY_MINUTES)
 
