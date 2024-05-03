@@ -26,7 +26,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     restart: always
     volumes:
-      - ./db_data:/var/lib/postgresql
+      - raad_db_data:/var/lib/postgresql/data
 
 #  nginx:
 #    image: nginx:latest
@@ -38,5 +38,5 @@ services:
 #    depends_on:
 #      - web
 #    restart: always
-#volumes:
-#  static_volume:
+volumes:
+  raad_db_data:
