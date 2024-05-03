@@ -65,7 +65,7 @@ class SyncFromWooCommerceCronJob(CronJobBase):
         for _ in range(quantity):
             device = models.Device.objects.create(
                 company=company,
-                notify_user=False
+                notify_for_created=False
             )
             devices.append(device)
         # send_mail(from_email=settings.DEFAULT_FROM_EMAIL, subject='گروه نرم افزاری رعد-سفارش موفق', message=texts.SUCCESSFUL_EMAIL_MESSAGE,
