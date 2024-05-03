@@ -25,6 +25,9 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     restart: always
+    volumes:
+      - ./mysql_data/data:/var/lib/mysql
+      - ./mysql_data/logs:/var/log/mysql
 
 #  nginx:
 #    image: nginx:latest
