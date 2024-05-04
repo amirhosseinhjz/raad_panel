@@ -17,7 +17,8 @@ services:
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     restart: always
-
+    networks:
+      - raad_shared_network
   db:
     image: postgres
     environment:
@@ -27,6 +28,8 @@ services:
     restart: always
     volumes:
       - ./db_data:/var/lib/postgresql
+    networks:
+      - raad_shared_network
 
 #  nginx:
 #    image: nginx:latest
@@ -40,3 +43,7 @@ services:
 #    restart: always
 #volumes:
 #  static_volume:
+networks:
+  raad_shared_network:
+    driver: bridge
+
