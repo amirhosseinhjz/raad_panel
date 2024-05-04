@@ -99,7 +99,7 @@ class Company(models.Model):
         return self.expiration_date < timezone.now()
 
     def __str__(self):
-        return self.name + str(self.user)
+        return self.name + ' ' + str(self.user)
 
     class Meta:
         verbose_name_plural = "شرکت ها"
