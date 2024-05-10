@@ -5,6 +5,7 @@ from raad import models
 from raad.config import *
 from datetime import datetime, timedelta
 from raad.utils import normalize_phone
+from django.utils import timezone
 
 
 class SyncFromWooCommerceCronJob(CronJobBase):
@@ -80,7 +81,7 @@ class SyncFromWooCommerceCronJob(CronJobBase):
             )
             return
 
-        now = datetime.now()
+        now = timezone.now()
 
         if company is None:
             company = models.Company(user=user, expiration_date=now)
