@@ -76,7 +76,7 @@ def get_new_orders():
             formatted_order_items.append({
                 "order_item_id": item[0],
                 "qty": qty,
-                "product_id": item[7],
+                "product_id": int(item[7]),
             })
 
         order_data.append({
