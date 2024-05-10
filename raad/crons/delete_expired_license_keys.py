@@ -11,6 +11,7 @@ class DeleteExpiredLicenseKeysCronJob(CronJobBase):
     code = 'raad.delete_expired_license_keys'
 
     def do(self):
+        return  #  do not use this cron until talk about it
         from_date = self.get_from_date()
 
         companies = Company.objects.filter(
