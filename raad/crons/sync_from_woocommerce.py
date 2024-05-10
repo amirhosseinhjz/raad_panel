@@ -2,7 +2,7 @@ from django_cron import CronJobBase, Schedule
 from raad.UseCases.get_new_orders import get_new_orders
 from django.contrib.auth.models import User
 from raad import models
-from raad.config import PRODUCT_COMPANY_DURATION_CONFIG
+from raad.config import *
 from datetime import datetime, timedelta
 from raad.utils import normalize_phone
 
@@ -14,13 +14,12 @@ class SyncFromWooCommerceCronJob(CronJobBase):
 
     code = 'raad.sync_from_woocommerce'
 
+
     def do(self):
         try:
             while orders := get_new_orders():
                 for order in orders:
-                    user = self.get_or_create_user(order)
-                    for order_item in order['items']:
-                        self.create_data(order_item, user)
+                    self.process_order(order)
         except Exception as e:
             error = models.ErrorLog()
             error.source = 'sync_data_from_woocommerce'
@@ -49,46 +48,52 @@ class SyncFromWooCommerceCronJob(CronJobBase):
         user.save()
         return user
 
+    def process_order(self, order):
+        user = self.get_or_create_user(order)
+        company_order_item = None
+        for order_item in order['items']:
+            if order_item["product_id"] in COMPANY_PRODUCT_IDS:
+                company_order_item = order_item
+        company = self.get_or_create_company(company_order_item, user)
+        self.create_devices(order, company)
+
     @staticmethod
-    def create_data(order_item_data, user):
+    def get_or_create_company(company_order_item, user):
         try:
             company = models.Company.objects.get(user=user)
         except models.Company.DoesNotExist:
-            company = models.Company.objects.create(
-                user=user,
-                expiration_date=datetime.now() + timedelta(days=365)
+            company = None
+
+        if company is not None and not company.has_expired() and company_order_item is not None:
+            error_message = f"User {user} has active company but new company order item received with data {company_order_item}"
+            models.ErrorLog.objects.create(
+                source='sync_from_woocommerce',
+                error_message=error_message
             )
-
-        quantity = int(order_item_data['qty'])
-
-        devices = []
-        for _ in range(quantity):
-            device = models.Device.objects.create(
-                company=company,
-                notify_for_created=False
+            return company
+        product_id = company_order_item["product_id"]
+        duration_in_days = PRODUCT_COMPANY_DURATION_CONFIG.get(product_id, None)
+        if duration_in_days is None:
+            models.ErrorLog.objects.create(
+                source='sync_orders_from_woocommerce',
+                error_message=f"invalid product {product_id}, {company_order_item}"
             )
-            devices.append(device)
-        # send_mail(from_email=settings.DEFAULT_FROM_EMAIL, subject='گروه نرم افزاری رعد-سفارش موفق', message=texts.SUCCESSFUL_EMAIL_MESSAGE,
-        #           recipient_list=[company.user.email], fail_silently=True)
-        # send_succesful_buy(company.user.username, fail_silently=True)
-
-    @staticmethod
-    def create_company(order_item_data, user):
-        product_id = int(order_item_data['product_id'])
-        quantity = int(order_item_data['qty'])
-
-        if not product_id in PRODUCT_COMPANY_DURATION_CONFIG:
-            error = models.ErrorLog()
-            error.source = 'sync_orders_from_woocommerce'
-            error.error_message = f"invalid product {product_id}, " + str(order_item_data)
-            error.save()
             return
 
-        duration = PRODUCT_COMPANY_DURATION_CONFIG[product_id]
+        if company is None:
+            company = models.Company(user=user)
 
-        for _ in range(quantity):
-            # TODO: maybe just adding device is needed
-            company = models.Company()
-            company.user = user
-            company.expiration_date = datetime.now() + timedelta(days=duration)
-            company.save()
+        company.expiration_date = datetime.now() + timedelta(days=duration_in_days)
+        company.save()
+        return company
+
+    def create_devices(self, order, company):
+        for order_item in order['items']:
+            if order_item["product_id"] in DEVICE_PRODUCT_IDS:
+                quantity = int(order_item['qty'])
+
+                for _ in range(quantity):
+                    device = models.Device.objects.create(
+                        company=company,
+                        notify_for_created=False
+                    )
