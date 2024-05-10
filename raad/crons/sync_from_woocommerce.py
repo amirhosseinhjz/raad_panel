@@ -64,13 +64,13 @@ class SyncFromWooCommerceCronJob(CronJobBase):
         except models.Company.DoesNotExist:
             company = None
 
-        if company is not None and not company.has_expired() and company_order_item is not None:
-            error_message = f"User {user} has active company but new company order item received with data {company_order_item}"
-            models.ErrorLog.objects.create(
-                source='sync_from_woocommerce',
-                error_message=error_message
-            )
-            return company
+        # if company is not None and not company.has_expired() and company_order_item is not None:
+        #     error_message = f"User {user} has active company but new company order item received with data {company_order_item}"
+        #     models.ErrorLog.objects.create(
+        #         source='sync_from_woocommerce',
+        #         error_message=error_message
+        #     )
+        #     return company
         product_id = company_order_item["product_id"]
         duration_in_days = PRODUCT_COMPANY_DURATION_CONFIG.get(product_id, None)
         if duration_in_days is None:
@@ -80,10 +80,15 @@ class SyncFromWooCommerceCronJob(CronJobBase):
             )
             return
 
-        if company is None:
-            company = models.Company(user=user)
+        now = datetime.now()
 
-        company.expiration_date = datetime.now() + timedelta(days=duration_in_days)
+        if company is None:
+            company = models.Company(user=user, expiration_date=now)
+
+        if company.expiration_date < now:
+            company.expiration_date = now
+
+        company.expiration_date = company.expiration_date + timedelta(days=duration_in_days)
         company.save()
         return company
 
