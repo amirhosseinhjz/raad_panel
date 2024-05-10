@@ -15,8 +15,7 @@ class DeleteExpiredLicenseKeysCronJob(CronJobBase):
 
         companies = Company.objects.filter(
             expiration_date__lt=from_date
-            ).filter(deleted=False
-            ).filter(demo=True)
+            ).filter(deleted=False)
 
         for company in companies:
             company.deleted = True

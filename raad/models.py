@@ -66,7 +66,7 @@ class Company(models.Model):
     license_key = models.CharField(max_length=200, unique=True)
     expiration_date = models.DateTimeField()
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="companies")
-    demo = models.BooleanField(default=False)
+    # demo = models.BooleanField(default=False)
     deleted = models.BooleanField(default=False)
     notify_for_created = models.BooleanField(default=True)
 
@@ -82,8 +82,8 @@ class Company(models.Model):
             company_count = self.user.companies.count()
             self.name = f'شرکت {company_count + 1}'
 
-        if self.demo and not self.id:
-            self.expiration_date = datetime.now() + timedelta(days=7)
+        # if self.demo and not self.id:
+        #     self.expiration_date = datetime.now() + timedelta(days=7)
 
         if not self.license_key:
             self.license_key = str(uuid.uuid4())[:34].replace('-', '')
