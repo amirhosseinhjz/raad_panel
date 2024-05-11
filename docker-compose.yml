@@ -27,7 +27,7 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     restart: always
     volumes:
-      - db_volume:/var/lib/postgresql
+      - ./db_volume:/var/lib/postgresql/data
     networks:
       - raad_shared_network
 
@@ -43,6 +43,7 @@ services:
 #    restart: always
 volumes:
   db_volume:
+
 networks:
   raad_shared_network:
     driver: bridge
