@@ -22,10 +22,10 @@ class SyncFromWooCommerceCronJob(CronJobBase):
                 for order in orders:
                     self.process_order(order)
         except Exception as e:
-            error = models.ErrorLog()
-            error.source = 'sync_data_from_woocommerce'
-            error.error_message = str(e)
-            error.save()
+            models.ErrorLog.objects.create(
+                source='sync_data_from_woocommerce',
+                error_message=str(e),
+            )
             raise e
 
     @staticmethod
@@ -60,18 +60,16 @@ class SyncFromWooCommerceCronJob(CronJobBase):
 
     @staticmethod
     def get_or_create_company(company_order_item, user):
-        try:
-            company = models.Company.objects.get(user=user)
-        except models.Company.DoesNotExist:
-            company = None
+        company = models.Company.objects.filter(user=user).first()
 
-        # if company is not None and not company.has_expired() and company_order_item is not None:
-        #     error_message = f"User {user} has active company but new company order item received with data {company_order_item}"
-        #     models.ErrorLog.objects.create(
-        #         source='sync_from_woocommerce',
-        #         error_message=error_message
-        #     )
-        #     return company
+        if company_order_item is None:
+            if company is not None:
+                return company
+            models.ErrorLog.objects.create(
+                source='sync_data_from_woocommerce',
+                error_message=f"user {user}has no company & no company purchased",
+            )
+            return None
         product_id = company_order_item["product_id"]
         duration_in_days = PRODUCT_COMPANY_DURATION_CONFIG.get(product_id, None)
         if duration_in_days is None:
