@@ -155,3 +155,9 @@ class MessengerAdmin(models.Model):
         verbose_name_plural = "مدیرهای پیامرسان"
         verbose_name = "مدیر پیامرسان"
 
+
+class WooCommerceProcessedOrder(models.Model):
+    """
+    log the order id for each woocommerce order when processed
+    """
+    order_id = models.CharField(max_length=12, blank=False, null=False, unique=True)

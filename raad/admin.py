@@ -69,3 +69,9 @@ class MessengerAdminAdmin(admin.ModelAdmin):
     list_display = ('id', 'messenger', 'admin_messenger_id', 'company')
     list_filter = ('messenger', 'company')
     search_fields = ('admin_messenger_id',)
+
+
+@admin.register(models.WooCommerceProcessedOrder)
+class WooCommerceProcessedOrderLogAdmin(admin.ModelAdmin):
+    list_display = 'order_id',
+    search_fields = ('order_id',)

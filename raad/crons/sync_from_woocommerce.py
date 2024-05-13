@@ -1,9 +1,12 @@
+from django.db import transaction
 from django_cron import CronJobBase, Schedule
 from raad.UseCases.get_new_orders import get_new_orders
 from django.contrib.auth.models import User
 from raad import models
 from raad.config import *
 from datetime import datetime, timedelta
+
+from raad.models import WooCommerceProcessedOrder
 from raad.utils import normalize_phone
 from django.utils import timezone
 
@@ -49,7 +52,15 @@ class SyncFromWooCommerceCronJob(CronJobBase):
         user.save()
         return user
 
+    @transaction.atomic
     def process_order(self, order):
+        order_id = order["order_id"]
+        if not self.create_processed_order_log(order_id):
+            models.ErrorLog.objects.create(
+                source='sync_order_from_woocommerce',
+                error_message=f"order {order_id} was triggered to be processed again",
+            )
+            return
         user = self.get_or_create_user(order)
         company_order_item = None
         for order_item in order['items']:
@@ -101,3 +112,8 @@ class SyncFromWooCommerceCronJob(CronJobBase):
                         company=company,
                         notify_for_created=False
                     )
+
+    @staticmethod
+    def create_processed_order_log(order_id):
+        log, created = WooCommerceProcessedOrder.objects.get_or_create(order_id=order_id)
+        return created
