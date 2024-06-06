@@ -4,7 +4,7 @@ from raad.UseCases.get_new_orders import get_new_orders
 from django.contrib.auth.models import User
 from raad import models
 from raad.config import *
-from datetime import datetime, timedelta
+from datetime import timedelta
 
 from raad.models import WooCommerceProcessedOrder
 from raad.utils import normalize_phone
@@ -100,6 +100,11 @@ class SyncFromWooCommerceCronJob(CronJobBase):
 
         company.expiration_date = company.expiration_date + timedelta(days=duration_in_days)
         company.save()
+        # create the default device
+        models.Device.objects.create(
+            company=company,
+            notify_for_created=False
+        )
         return company
 
     def create_devices(self, order, company):
